@@ -41,8 +41,8 @@ public class Product extends BaseEntity {
     private List<ProductTransactionHistory> histories;
 
     @Transient
-    public  double getRate() {
-        if(feedbacks == null || feedbacks.isEmpty()) {
+    public double getRate() {
+        if (feedbacks == null || feedbacks.isEmpty()) {
             return 0.0;
         }
         var rate = this.feedbacks.stream()

@@ -66,7 +66,7 @@ public class ProductController {
 
     @PatchMapping("/archived/{product-id}")
     public ResponseEntity<Integer> updaeArchivedStatus(@PathVariable("product-id") Integer productId,
-                                                        Authentication connectedUser) {
+                                                       Authentication connectedUser) {
         return ResponseEntity.ok(service.updateArchivedStatus(productId, connectedUser));
     }
 
@@ -80,14 +80,14 @@ public class ProductController {
     @PatchMapping("/borrow/return/{product-id}")
     public ResponseEntity<Integer> returnBorrowProduct(@PathVariable("product-id") Integer productId,
                                                        Authentication connectedUser) {
-        return ResponseEntity.ok(service.returnBorrowedProduct(productId,connectedUser));
+        return ResponseEntity.ok(service.returnBorrowedProduct(productId, connectedUser));
     }
 
 
     @PatchMapping("/borrow/return/approve/{product-id}")
     public ResponseEntity<Integer> approveReturnBorrowProduct(@PathVariable("product-id") Integer productId,
-                                                       Authentication connectedUser) {
-        return ResponseEntity.ok(service.approveReturnBorrowedProduct(productId,connectedUser));
+                                                              Authentication connectedUser) {
+        return ResponseEntity.ok(service.approveReturnBorrowedProduct(productId, connectedUser));
     }
 
     @PostMapping(value = "/cover/{product-id}", consumes = "multipart/form-date")
@@ -95,7 +95,7 @@ public class ProductController {
                                                        @Parameter()
                                                        @RequestPart("file") MultipartFile file,
                                                        Authentication connectedUser) {
-        service.uploadProductCoverPicture(file,connectedUser,productId);
+        service.uploadProductCoverPicture(file, connectedUser, productId);
         return ResponseEntity.accepted().build();
     }
 

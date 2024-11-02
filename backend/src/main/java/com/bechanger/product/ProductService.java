@@ -18,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import static com.bechanger.product.ProductSpecification.withOwnerId;
 
@@ -46,7 +45,7 @@ public class ProductService {
 
     public PageResponse<ProductResponse> findAllBooks(int page, int size, Authentication connectedUser) {
         User user = ((User) connectedUser.getPrincipal());
-        Pageable pageable = PageRequest.of(page,size, Sort.by("createdDate").descending());
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
         Page<Product> products = productRepository.findAllDisplayableProducts(pageable, user.getId());
         List<ProductResponse> productResponses = products.stream()
                 .map(productMapper::toProductResponse)
@@ -64,8 +63,8 @@ public class ProductService {
 
     public PageResponse<ProductResponse> findAllBooksByOwner(int page, int size, Authentication connectedUser) {
         User user = ((User) connectedUser.getPrincipal());
-        Pageable pageable = PageRequest.of(page,size, Sort.by("createdDate").descending());
-        Page<Product> products = productRepository.findAll(withOwnerId(user.getId()),pageable);
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
+        Page<Product> products = productRepository.findAll(withOwnerId(user.getId()), pageable);
 
         List<ProductResponse> productResponses = products.stream()
                 .map(productMapper::toProductResponse)
@@ -83,7 +82,7 @@ public class ProductService {
 
     public PageResponse<BorrowedProductResponse> findAllBorrowedProducts(int page, int size, Authentication connectedUser) {
         User user = ((User) connectedUser.getPrincipal());
-        Pageable pageable = PageRequest.of(page,size, Sort.by("createdDate").descending());
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
         Page<ProductTransactionHistory> allBorrowedProducts = productTransactionHistoryRepository.findAllBorrowedProducts(pageable, user.getId());
         List<BorrowedProductResponse> productResponse = allBorrowedProducts.stream()
                 .map(productMapper::toBorrowedBookResponse)
@@ -101,7 +100,7 @@ public class ProductService {
 
     public PageResponse<BorrowedProductResponse> findAllReturnedProducts(int page, int size, Authentication connectedUser) {
         User user = ((User) connectedUser.getPrincipal());
-        Pageable pageable = PageRequest.of(page,size, Sort.by("createdDate").descending());
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
         Page<ProductTransactionHistory> allBorrowedProducts = productTransactionHistoryRepository.findAllReturnedProducts(pageable, user.getId());
         List<BorrowedProductResponse> productResponse = allBorrowedProducts.stream()
                 .map(productMapper::toBorrowedBookResponse)
@@ -121,7 +120,7 @@ public class ProductService {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new EntityNotFoundException("No products found with the ID: " + productId));
         User user = ((User) connectedUser.getPrincipal());
-        if(!Objects.equals(product.getOwner().getId(), user.getId())) {
+        if (!Objects.equals(product.getOwner().getId(), user.getId())) {
             throw new OperationNotPermittedException("You can not update others products available status");
         }
         product.setAvailable(!product.isAvailable());
@@ -133,7 +132,7 @@ public class ProductService {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new EntityNotFoundException("No products found with the ID: " + productId));
         User user = ((User) connectedUser.getPrincipal());
-        if(!Objects.equals(product.getOwner().getId(), user.getId())) {
+        if (!Objects.equals(product.getOwner().getId(), user.getId())) {
             throw new OperationNotPermittedException("You can not update others products archived status");
         }
         product.setArchived(!product.isArchived());
@@ -145,15 +144,15 @@ public class ProductService {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new EntityNotFoundException("No products found with the ID: " + productId));
 
-        if(product.isArchived() || !product.isAvailable()) {
+        if (product.isArchived() || !product.isAvailable()) {
             throw new OperationNotPermittedException("The requested product cannot be borrowed since it is archived or not available");
         }
         User user = ((User) connectedUser.getPrincipal());
-        if(Objects.equals(product.getOwner().getId(), user.getId())) {
+        if (Objects.equals(product.getOwner().getId(), user.getId())) {
             throw new OperationNotPermittedException("You can not borrow your own product");
         }
         final boolean isAlreadyBorrowed = productTransactionHistoryRepository.isAlreadyBorrowedByUser(productId, user.getId());
-        if(isAlreadyBorrowed) {
+        if (isAlreadyBorrowed) {
             throw new OperationNotPermittedException("The requested product is already borrowed");
         }
         ProductTransactionHistory productTransactionHistory = ProductTransactionHistory.builder()
@@ -168,11 +167,11 @@ public class ProductService {
     public Integer returnBorrowedProduct(Integer productId, Authentication connectedUser) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new EntityNotFoundException("No products found with the ID: " + productId));
-        if(product.isArchived() || !product.isAvailable()) {
+        if (product.isArchived() || !product.isAvailable()) {
             throw new OperationNotPermittedException("The requested product cannot be borrowed since it is archived or not available");
         }
         User user = ((User) connectedUser.getPrincipal());
-        if(Objects.equals(product.getOwner().getId(), user.getId())) {
+        if (Objects.equals(product.getOwner().getId(), user.getId())) {
             throw new OperationNotPermittedException("You can not borrow or return your own product");
         }
         ProductTransactionHistory productTransactionHistory = productTransactionHistoryRepository.findByProductIdAndUserId(productId, user.getId())
@@ -184,11 +183,11 @@ public class ProductService {
     public Integer approveReturnBorrowedProduct(Integer productId, Authentication connectedUser) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new EntityNotFoundException("No products found with the ID: " + productId));
-        if(product.isArchived() || !product.isAvailable()) {
+        if (product.isArchived() || !product.isAvailable()) {
             throw new OperationNotPermittedException("The requested product cannot be borrowed since it is archived or not available");
         }
         User user = ((User) connectedUser.getPrincipal());
-        if(Objects.equals(product.getOwner().getId(), user.getId())) {
+        if (Objects.equals(product.getOwner().getId(), user.getId())) {
             throw new OperationNotPermittedException("You can not borrow or return your own product");
         }
         ProductTransactionHistory productTransactionHistory = productTransactionHistoryRepository.findByProductIdAndOwnerId(productId, user.getId())

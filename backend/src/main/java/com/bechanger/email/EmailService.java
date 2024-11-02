@@ -24,7 +24,7 @@ public class EmailService {
     @Async
     public void sendEmail(String to, String username, EmailTemplateName emailTemplateName, String confirmationUrl, String activatonCode, String subject) throws MessagingException {
         String templateName;
-        if(emailTemplateName == null) {
+        if (emailTemplateName == null) {
             templateName = "confirm-email";
         } else {
             templateName = emailTemplateName.name();

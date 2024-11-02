@@ -20,7 +20,7 @@ public class FeedbackController {
 
     @PostMapping
     public ResponseEntity<Integer> saveFeedback(@Valid @RequestBody FeedbackRequest request,
-                                                 Authentication connectedUser) {
+                                                Authentication connectedUser) {
         return ResponseEntity.ok(service.save(request, connectedUser));
     }
 

@@ -14,10 +14,10 @@ public class FileUtils {
 
 
     public static byte[] readFileFromLocation(String fileUrl) {
-        if(StringUtils.isBlank(fileUrl)) {
+        if (StringUtils.isBlank(fileUrl)) {
             return null;
         }
-        try{
+        try {
             Path filePath = new File(fileUrl).toPath();
             return Files.readAllBytes(filePath);
         } catch (IOException e) {
