@@ -151,3 +151,5 @@ n
 >backend/src/main/java/com/bechanger/product/ProductMapper.java,a\f\af8781a15eca9ca48fe33ae51459a398e57ab1ae
 p
 @backend/src/main/java/com/bechanger/product/ProductResponse.java,5\c\5c7871cd3d1681a13ceaec73c2ed6af1f0fb09ad
+I
+docker/backend/Dockerfile,d\9\d99aa21f5bada484ca6b2954ef8767c524ea2c1e
