@@ -187,8 +187,8 @@ public class ProductService {
             throw new OperationNotPermittedException("The requested product cannot be borrowed since it is archived or not available");
         }
         User user = ((User) connectedUser.getPrincipal());
-        if (Objects.equals(product.getOwner().getId(), user.getId())) {
-            throw new OperationNotPermittedException("You can not borrow or return your own product");
+        if (!Objects.equals(product.getOwner().getId(), user.getId())) {
+            throw new OperationNotPermittedException("You cannot approve the return of a book you do not own");
         }
         ProductTransactionHistory productTransactionHistory = productTransactionHistoryRepository.findByProductIdAndOwnerId(productId, user.getId())
                 .orElseThrow(() -> new OperationNotPermittedException("The product is not returned yet. You can not approve ist return"));
