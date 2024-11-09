@@ -1,0 +1,58 @@
+
+@if (isSubmitted && isOkay) {
+
+    <div class="align-items-center flex justify-content-center lg:px-8 md:px-6 px-4 py-8 surface-ground ng-star-inserted">
+        <div class="surface-card p-4 shadow-2 border-round w-full lg:w-6">
+            <div class="text-center mb-5">
+                <div class=" text-green-600 text-900 text-3xl font-medium mb-3">Activation successful!</div>
+                <span class="text-500 font-medium line-height-3">Your account has benn activated successfully.</span>
+                <div class="text-center mt-5">
+                    <button (click)="login()" pButton pRipple label="Sign In" icon="pi pi-user" class=".lg\:w-6 "></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+} @else if (isSubmitted && !isOkay) {
+
+    <div class="align-items-center flex justify-content-center lg:px-8 md:px-6 px-4 py-8 surface-ground ng-star-inserted">
+        <div class="surface-card p-4 shadow-2 border-round w-full lg:w-6">
+            <div class="text-center mb-5">
+                <div class="text-red-600 text-900 text-3xl font-medium mb-3">Activation failed!</div>
+                <span class="text-600 font-medium line-height-3">Token has been expired or invalid.</span>
+                <div class="text-center mt-5">
+                    <button (click)="tryAgain()" pButton pRipple label="Try again" icon="pi pi-user" class=".lg\:w-6 "></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+} @else {
+
+    <div class="card flex justify-content-center">
+        <div class="flex flex-column align-items-center">
+            <div class="font-bold text-xl mb-2 mt-5">Authenticate Your Account</div>
+            <p class="text-color-secondary block mb-5">Please enter the code sent to your phone.</p>
+            <p-inputOtp [(ngModel)]="value" [length]="6" style="gap: 0">
+                <ng-template pTemplate="input" let-token let-events="events" let-index="index">
+                    <input 
+                        pInputText 
+                        type="text" 
+                        [maxLength]="1" 
+                        (input)="events.input($event)" 
+                        (keydown)="events.keydown($event)" 
+                        [attr.value]="token" 
+                        class="custom-otp-input" />
+                    <div *ngIf="index === 3" class="px-3">
+                        <i class="pi pi-minus"></i>
+                    </div>
+                </ng-template>
+            </p-inputOtp>
+            <div class="flex justify-content-between mt-5 align-self-stretch">
+                <p-button label="Resend Code" [link]="true" class="p-0"/>
+                <p-button (click)="confirmAccount()" label="Submit Code"/>
+            </div>
+        </div>
+    </div>
+    
+}

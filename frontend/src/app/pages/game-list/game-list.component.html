@@ -1,0 +1,20 @@
+<div class="lg:px-8 md:px-6 px-4 py-8 surface-ground ng-star-inserted">
+    <div class="flex flex-row flex-wrap gap-3">
+        @for (game of gameResponse.content; track game.upc) {
+        <app-game-card 
+            [game]="game"
+            [manage]="false"
+            (borrow)="borrowGame($event)"
+        ></app-game-card>
+        }
+    </div>
+    <div class="card flex justify-content-center pt-8">
+        <p-paginator 
+            (onPageChange)="onPageChange($event)" 
+            [first]="page" 
+            [rows]="size" 
+            [totalRecords]="120" 
+            [rowsPerPageOptions]="[10, 20, 30]" />
+    </div>
+</div>
+

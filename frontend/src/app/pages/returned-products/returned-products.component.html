@@ -1,0 +1,52 @@
+<div class="surface-ground px-4 py-8 md:px-6 lg:px-8">
+    <div class="card">
+        <p-table [value]="product" [tableStyle]="{'min-width': '60rem'}">
+            <ng-template pTemplate="caption">
+                <div class="flex align-items-center justify-content-between">
+                    Products
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Name</th>
+                    <th>Image</th>
+                    <th>Publisher name</th>
+                    <th>UPC</th>
+                    <th>Rate</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-product>
+                <tr>
+                    <td>{{product.title}}</td>
+                    <td><img [src]="cover" [alt]="product.title" width="100" class="shadow-4" /></td>
+                    <td>{{product.publisherName}}</td>
+                    <td>{{product.upc}}</td>
+                    <td><p-rating [(ngModel)]="product.rate" [readonly]="true" [cancel]="false" /></td>
+                    <td><p-tag *ngIf="product.returned" value="Return approved" severity="success" /></td>
+                    <td>
+                        <div class="card flex justify-content-center">
+                            <p-button 
+                                label="Approve"
+                                [outlined]="true"
+                                icon="pi pi-check"
+                                [disabled]="product.returned"
+                                (onClick)="approve(product)"
+                            />
+                        </div>
+                    </td>
+                </tr>
+                
+            </ng-template>
+        </p-table>
+    </div>
+    <div class="card flex justify-content-center pt-8">
+        <p-paginator 
+            (onPageChange)="onPageChange($event)" 
+            [first]="page" 
+            [rows]="size" 
+            [totalRecords]="120" 
+            [rowsPerPageOptions]="[10, 20, 30]" />
+    </div>
+</div>

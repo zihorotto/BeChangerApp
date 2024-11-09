@@ -1,0 +1,15 @@
+.details {
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Number of lines to show */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+:host ::ng-deep .p-card .p-card-content {
+    padding: 0;
+}
+
+:host ::ng-deep .p-card .p-card-footer {
+    padding: 0;
+}

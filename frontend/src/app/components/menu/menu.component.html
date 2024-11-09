@@ -1,0 +1,9 @@
+<div class="card">
+    <p-menubar [model]="items">
+        <ng-template pTemplate="end">
+            <div class="flex align-items-center gap-2">
+                <button pButton type="button" label="Logout" severity="secondary" icon="pi pi-power-off" (click)="logout()"></button>
+            </div>
+        </ng-template>
+    </p-menubar>
+</div>

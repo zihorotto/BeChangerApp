@@ -1,0 +1,31 @@
+<p-card [header]="game.title " [subheader]="game.publisherName" [style]="{ width: '360px'}">
+    <ng-template pTemplate="header">
+        <img alt="Card" [src]="gameCover" />
+    </ng-template>
+    <p-tag *ngIf="tag.isVisiable && manage" [value]="tag.title" [severity]="tag.title == 'Shared' ? 'success' : 'warning'"/>
+    <p class="details">{{game.description}}</p>
+
+    <ng-template pTemplate="footer">
+        <div class="flex justify-content-between align-items-center">
+            <div>
+                @if (game.rate || game.rate > 0) {
+                    <p-rating [(ngModel)]="game.rate" [readonly]="true" [cancel]="false" />
+                }
+            </div>
+
+            @if (manage) {
+                <div>
+                    <p-button (onClick)="onArchive()" icon="pi pi-trash" [rounded]="true" [text]="true" severity="warning" />
+                    <p-button (onClick)="onShare()" icon="pi pi-share-alt" [rounded]="true" [text]="true" severity="success" />
+                    <p-button (onClick)="onEdit()" icon="pi pi-pencil" [rounded]="true" [text]="true" severity="primary" />
+                </div>
+            } @else {
+                <div>
+                    <p-button icon="pi pi-info-circle" [rounded]="true" [text]="true" severity="info" />
+                    <p-button (onClick)="onBorrow()" icon="pi pi-cart-plus" [rounded]="true" [text]="true" severity="warning" />
+                    <p-button icon="pi pi-heart-fill " [rounded]="true" [text]="true" severity="danger" />
+                </div>
+            }
+        </div>
+    </ng-template>
+</p-card>
