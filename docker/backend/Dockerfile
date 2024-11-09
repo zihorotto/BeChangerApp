@@ -16,11 +16,7 @@ COPY --from=build /build/target/be-changer-*.jar /app/
 
 EXPOSE 8088
 
-ENV DB_URL=jdbc:postgresql://postgres-sql-bc:5432/be_changer_db
-ENV MAILDEV_URL=localhost
-
 ENV ACTIVE_PROFILE=${PROFILE}
 ENV JAR_VERSION=${APP_VERSION}
 
-
-CMD java -jar -Dspring.profiles.active=${ACTIVE_PROFILE} -Dspring.datasource.url=${DB_URL} be-changer-${JAR_VERSION}.jar
+CMD java -jar -Dspring.profiles.active=${ACTIVE_PROFILE} be-changer-${JAR_VERSION}.jar
