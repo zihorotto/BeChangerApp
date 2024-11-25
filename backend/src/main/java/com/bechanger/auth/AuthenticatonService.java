@@ -23,10 +23,11 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 
-@Service
+//@Service
 @RequiredArgsConstructor
 public class AuthenticatonService {
 
+    /*
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
@@ -121,4 +122,6 @@ public class AuthenticatonService {
         savedToken.setValidatedAt(LocalDateTime.now());
         tokenRepository.save(savedToken);
     }
+
+     */
 }
