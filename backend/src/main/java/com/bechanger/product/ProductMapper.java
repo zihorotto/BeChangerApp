@@ -28,7 +28,7 @@ public class ProductMapper {
                 .rate(product.getRate())
                 .archived(product.isArchived())
                 .available(product.isAvailable())
-                .owner(product.getOwner().fullName())
+                //.owner(product.getOwner().fullName())
                 .coverImage(FileUtils.readFileFromLocation(product.getCoverImage()))
                 .build();
     }

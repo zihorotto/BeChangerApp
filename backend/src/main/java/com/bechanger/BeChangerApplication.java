@@ -2,6 +2,7 @@ package com.bechanger;
 
 import com.bechanger.role.Role;
 import com.bechanger.role.RoleRepository;
+import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,6 +19,7 @@ public class BeChangerApplication {
         SpringApplication.run(BeChangerApplication.class, args);
     }
 
+    /*
     @Bean
     public CommandLineRunner runner(RoleRepository roleRepository) {
         return args -> {
@@ -28,4 +30,5 @@ public class BeChangerApplication {
             }
         };
     }
+     */
 }
