@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { MenubarModule } from 'primeng/menubar';
+import { KeycloakService } from '../../services/keycloak/keycloak.service';
 
 @Component({
   selector: 'app-menu',
@@ -14,6 +15,7 @@ import { MenubarModule } from 'primeng/menubar';
 export class MenuComponent {
   items: MenuItem[] | undefined;
 
+  private keycloakService = inject(KeycloakService);
   private router = inject(Router);
 
   ngOnInit() {
@@ -53,8 +55,9 @@ export class MenuComponent {
       ]
   }
 
-  logout(){
-    this.router.navigate(['/login']);
-    localStorage.removeItem('user');
+  async logout(){
+    this.keycloakService.logout();
+    // this.router.navigate(['/login']);
+    // localStorage.removeItem('user');
   }
 }

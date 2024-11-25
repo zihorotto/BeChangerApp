@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
@@ -12,6 +12,7 @@ import { AuthenticationRequest } from '../../services/models/authentication-requ
 import { AuthenticationResponse } from '../../services/models/authentication-response';
 import { AuthenticationService } from '../../services/authentication/authentication.service';
 import { TokenService } from '../../services/token/token.service';
+import { KeycloakService } from '../../services/keycloak/keycloak.service';
 
 @Component({
   selector: 'app-login',
@@ -27,48 +28,13 @@ import { TokenService } from '../../services/token/token.service';
   ],
   providers: [MessageService],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styleUrl: './login.component.scss',
 })
-export class LoginComponent {
-  authRequest: AuthenticationRequest = {
-    email: '',
-    password: '',
-  }
+export class LoginComponent implements OnInit {
+  private keycloakService = inject(KeycloakService);
 
-  private router = inject(Router);
-  private authService = inject(AuthenticationService)
-  private tokenService = inject(TokenService);
-  private messageService = inject(MessageService);
-
-  login(){
-    this.messageService.clear();
-    this.validate();
-    this.authService.authenticate(this.authRequest).subscribe({
-      next: (response: AuthenticationResponse) => {
-        debugger
-        this.tokenService.token = response.token as string;
-        this.router.navigate(['/games']);
-      },
-      error: (error:any) => {
-        debugger
-        if(error.error.validationErrors){
-          const errors:any = error.error.validationErrors;
-          errors.forEach((error:string) => {
-            this.messageService.add({severity:'error', detail: error});
-          });
-        } else {
-          this.messageService.add({severity:'error', detail: error.message});
-        }
-      }
-    })
- }
-
-  validate() {
-    if(this.authRequest.email === ''){
-      this.messageService.add({severity:'error', detail:'Email is required'});
-    }
-    if(this.authRequest.password === ''){
-      this.messageService.add({severity:'error', detail:'Password is required'});
-    }
+  async ngOnInit(): Promise<void> {
+    await this.keycloakService.init();
+    await this.keycloakService.login();
   }
 }

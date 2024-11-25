@@ -1,15 +1,14 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
+import { KeycloakService } from '../services/keycloak/keycloak.service';
 
 export const postLoginGuard: CanActivateFn = (route, state) => {
+  const keycloakService: KeycloakService = inject(KeycloakService);
   const router = inject(Router);
-  const user = localStorage.getItem('user');
 
-  if(user != null) {
+  if(!keycloakService.keycloak?.isTokenExpired()) {
     router.navigate(['/games']);
     return false;
-  } else {
-    
-    return true;
   }
+    return true;
 };
