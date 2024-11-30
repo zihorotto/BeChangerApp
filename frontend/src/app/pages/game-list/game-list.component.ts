@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { GameCardComponent } from "../../components/game-card/game-card.component";
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
+import { ProductService } from '../../services/product/product.service';
 
 
 @Component({
@@ -84,21 +85,22 @@ export class GameListComponent implements OnInit {
     ]
   };
 
-  //private gameService = inject(gameService);
+  private gameService = inject(ProductService);
 
   ngOnInit(): void {
       this.findAllGames()
   }
 
   findAllGames() {
-    // this.gameService.findAllGamesByOwner({
-    //   page: this.page,
-    //   size: this.size,
-    //  }).subscribe({
-    //   next: (response:any) => {
-    //     this.gameResponse = response;
-    //   }
-    //  });
+    this.gameService.findAllBooks({
+      page: this.page,
+      size: this.size,
+     }).subscribe({
+      next: (response:any) => {
+        console.log(response);
+        this.gameResponse = response;
+      }
+     });
   }
 
   onPageChange(event: PaginatorState) {
