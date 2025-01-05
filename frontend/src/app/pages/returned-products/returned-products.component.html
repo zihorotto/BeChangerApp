@@ -1,6 +1,6 @@
 <div class="surface-ground px-4 py-8 md:px-6 lg:px-8">
     <div class="card">
-        <p-table [value]="product" [tableStyle]="{'min-width': '60rem'}">
+        <p-table [value]="allProducts" [tableStyle]="{'min-width': '60rem'}">
             <ng-template pTemplate="caption">
                 <div class="flex align-items-center justify-content-between">
                     Products
@@ -9,9 +9,8 @@
             <ng-template pTemplate="header">
                 <tr>
                     <th>Name</th>
-                    <th>Image</th>
-                    <th>Publisher name</th>
-                    <th>UPC</th>
+                  <th>Brand</th>
+                    <th>Id</th>
                     <th>Rate</th>
                     <th>Status</th>
                     <th></th>
@@ -19,10 +18,9 @@
             </ng-template>
             <ng-template pTemplate="body" let-product>
                 <tr>
-                    <td>{{product.title}}</td>
-                    <td><img [src]="cover" [alt]="product.title" width="100" class="shadow-4" /></td>
-                    <td>{{product.publisherName}}</td>
-                    <td>{{product.upc}}</td>
+                    <td>{{product.name}}</td>
+                    <td>{{product.brand}}</td>
+                    <td>{{product.id}}</td>
                     <td><p-rating [(ngModel)]="product.rate" [readonly]="true" [cancel]="false" /></td>
                     <td><p-tag *ngIf="product.returned" value="Return approved" severity="success" /></td>
                     <td>

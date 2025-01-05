@@ -1,33 +1,33 @@
 <div class="surface-ground px-4 py-8 md:px-6 lg:px-8">
     <div class="surface-card p-5 shadow-2 border-round flex-auto">
-        <div class="text-900 font-semibold text-lg mt-3">Add new game</div>
+        <div class="text-900 font-semibold text-lg mt-3">Add new product</div>
         <p-divider />
         <div class="flex gap-5 flex-column-reverse md:flex-row">
             <div class="flex-auto p-fluid">
                 <div class="mb-4">
                     <label for="email" class="block font-medium text-900 mb-2">Name</label>
-                    <input [(ngModel)]="gameRequest.title" id="email" type="text" pinputtext="" class="p-inputtext p-component p-element">
+                    <input [(ngModel)]="productRequest.name" id="email" type="text" pinputtext="" class="p-inputtext p-component p-element">
                 </div>
                 <div class="mb-4">
                     <label for="description" class="block font-medium text-900 mb-2">Description</label>
                     <textarea 
-                        id="description"ű
-                        [(ngModel)]="gameRequest.description"
+                        id="description"
+                        [(ngModel)]="productRequest.description"
                         type="text" pinputtextarea="" rows="5"
                         class="p-inputtextarea p-inputtext p-component p-element p-inputtextarea-resizable"
                         style="height: 132px; overflow: hidden;">
                     </textarea>
                 </div>
                 <div class="mb-4">
-                    <label for="publisher" class="block font-medium text-900 mb-2">Publisher</label>
-                    <input [(ngModel)]="gameRequest.publisherName" id="publisher" type="text" pinputtext="" class="p-inputtext p-component p-element">
+                    <label for="brand" class="block font-medium text-900 mb-2">Brand</label>
+                    <input [(ngModel)]="productRequest.brand" id="brand" type="text" pinputtext="" class="p-inputtext p-component p-element">
                 </div>
                 <div class="mb-4">
-                    <label for="upc" class="block font-medium text-900 mb-2">UPC (Universal Product Code)</label>
-                    <input [(ngModel)]="gameRequest.upc" id="upc" type="text" pinputtext="" class="p-inputtext p-component p-element">
+                    <label for="identifier" class="block font-medium text-900 mb-2">Identifier</label>
+                    <input [(ngModel)]="productRequest.identifier" id="identifier" type="text" pinputtext="" class="p-inputtext p-component p-element">
                 </div>
                 <div class="flex align-items-center pb-3">
-                    <p-inputSwitch [(ngModel)]="gameRequest.shareable" inputid="privacy2" class="p-element">
+                    <p-inputSwitch [(ngModel)]="productRequest.available" inputid="privacy2" class="p-element">
                         <div class="p-inputswitch p-component">
                             <div class="p-hidden-accessible">
                                 <input type="checkbox" role="switch" id="privacy2" aria-checked="false">

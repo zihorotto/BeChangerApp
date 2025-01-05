@@ -4,6 +4,7 @@ import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { RatingModule } from 'primeng/rating';
+import { BorrowedProductResponse } from '../../services/models/borrowed-product-response';
 
 @Component({
   selector: 'app-return-dialog',
@@ -14,7 +15,7 @@ import { RatingModule } from 'primeng/rating';
 })
 export class ReturnDialogComponent {
   @Input() visible: boolean = false;
-  @Input() item:any = {};
+  @Input() item:BorrowedProductResponse = {};
 
   value: string = '';
   rate: number = 0;

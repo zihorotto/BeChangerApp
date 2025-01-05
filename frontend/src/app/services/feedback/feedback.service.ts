@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiConfiguration } from '../api-configuration';
-import { HttpClient, HttpContext, HttpParams, HttpResponse } from '@angular/common/http';
-import { filter, map, Observable } from 'rxjs';
+import { HttpClient, HttpParams} from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { FeedbackRequest } from '../models/feedback-request';
 import { PageResponseFeedbackResponse } from '../models/page-response-feedback-response';
 

@@ -1,14 +1,14 @@
 <div class="lg:px-8 md:px-6 px-4 py-4 surface-ground ng-star-inserted">
-    <p-button (onClick)="navigateToAddNewBook()" label="Add new game" icon="pi pi-plus" />
+    <p-button (onClick)="navigateToAddNewProduct()" label="Add new product" icon="pi pi-plus" />
     <div class="flex flex-row flex-wrap gap-3 mt-4">
-        @for (game of gameResponse.content; track game.upc) {
-            <app-game-card 
-                [game]="game"
+        @for (product of allProduct.content; track product.id) {
+            <app-product-card 
+                [product]="product"
                 [manage]="true"
-                (archive)="archiveGame($event)"
-                (share)="shareGame($event)"
-                (edit)="editGame($event)"
-            ></app-game-card>
+                (archive)="archiveProduct($event)"
+                (share)="shareProduct($event)"
+                (edit)="editProduct($event)"
+            ></app-product-card>
         }
     </div>
     <div class="card flex justify-content-center pt-8">

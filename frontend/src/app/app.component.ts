@@ -19,7 +19,7 @@ import { InputSwitchModule } from 'primeng/inputswitch';
   ],
 })
 export class AppComponent {
-  title = 'game-network-ui';
+  title = 'product-network-ui';
 
   defaultTheme = 'theme-dark.css';
   protected storage = inject(Storage);

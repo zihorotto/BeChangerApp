@@ -7,7 +7,7 @@ export const postLoginGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
 
   if(!keycloakService.keycloak?.isTokenExpired()) {
-    router.navigate(['/games']);
+    router.navigate(['/products']);
     return false;
   }
     return true;

@@ -7,22 +7,7 @@ import { ProductRequest } from '../models/product-request';
 import { ProductResponse } from '../models/product-response';
 import { PageResponseBorrowedProductResponse } from '../models/page-response-borrowed-product-response';
 
-export interface FindAllBooks$Params {
-  page: number;
-  size: number;
-}
-
-export interface FindAllReturnedProducts$Params {
-  page?: number;
-  size?: number;
-}
-
-export interface FindAllBooksByOwner$Params {
-  page?: number;
-  size?: number;
-}
-
-export interface FindAllBorrowedProducts$Params {
+export interface PaginationParams {
   page?: number;
   size?: number;
 }
@@ -52,7 +37,7 @@ export class ProductService {
 
   rootUrl:string;
 
-  findAllBooks(params?: FindAllBooks$Params): Observable<PageResponseProductResponse> {
+  findAllProducts(params?: PaginationParams): Observable<PageResponseProductResponse> {
     let httpParams = new HttpParams();
 
     if (params) {
@@ -87,7 +72,7 @@ export class ProductService {
     return this.http.patch<number>(`${this.rootUrl}/products/borrow/return/approve/${params['product-id']}`, null);
   }
 
-  updaeAvailableStatus(params: productId): Observable<number> {
+  updateAvailableStatus(params: productId): Observable<number> {
     return this.http.patch<number>(`${this.rootUrl}/products/available/${params['product-id']}`, null);
   }
 
@@ -99,7 +84,7 @@ export class ProductService {
     return this.http.get<ProductResponse>(`${this.rootUrl}/products/${params['product-id']}`);
   }
 
-  findAllReturnedProducts(params?: FindAllReturnedProducts$Params): Observable<PageResponseBorrowedProductResponse> {
+  findAllReturnedProducts(params?: PaginationParams): Observable<PageResponseBorrowedProductResponse> {
     let httpParams = new HttpParams();
 
     if (params) {
@@ -114,7 +99,7 @@ export class ProductService {
     return this.http.get<PageResponseBorrowedProductResponse>(`${this.rootUrl}/products/returner`, { params: httpParams });
   }
 
-  findAllBooksByOwner(params?: FindAllBooksByOwner$Params): Observable<PageResponseProductResponse> {
+  findAllProductsByOwner(params?: PaginationParams): Observable<PageResponseProductResponse> {
     let httpParams = new HttpParams();
 
     if (params) {
@@ -129,7 +114,7 @@ export class ProductService {
     return this.http.get<PageResponseProductResponse>(`${this.rootUrl}/products/owner`, { params: httpParams });
   }
 
-  findAllBorrowedProducts(params?: FindAllBorrowedProducts$Params): Observable<PageResponseBorrowedProductResponse> {
+  findAllBorrowedProducts(params?: PaginationParams): Observable<PageResponseBorrowedProductResponse> {
     let httpParams = new HttpParams();
 
     if (params) {

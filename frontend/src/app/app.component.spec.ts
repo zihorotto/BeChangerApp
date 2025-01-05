@@ -14,16 +14,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'game-network-ui' title`, () => {
+  it(`should have the 'product-network-ui' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('game-network-ui');
+    expect(app.title).toEqual('product-network-ui');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, game-network-ui');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, product-network-ui');
   });
 });
