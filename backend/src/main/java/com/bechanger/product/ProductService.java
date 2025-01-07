@@ -31,9 +31,7 @@ public class ProductService {
     private final FileStorageService fileStorageService;
 
     public Integer save(ProductRequest request, Authentication connectedUser) {
-        //User user = ((User) connectedUser.getPrincipal());
         Product product = productMapper.toProduct(request);
-        //product.setOwner(user);
         return productRepository.save(product).getId();
     }
 
@@ -147,7 +145,6 @@ public class ProductService {
         if (product.isArchived() || !product.isAvailable()) {
             throw new OperationNotPermittedException("The requested product cannot be borrowed since it is archived or not available");
         }
-        //User user = ((User) connectedUser.getPrincipal());
         if (Objects.equals(product.getCreatedBy(), connectedUser.getName())) {
             throw new OperationNotPermittedException("You can not borrow your own product");
         }

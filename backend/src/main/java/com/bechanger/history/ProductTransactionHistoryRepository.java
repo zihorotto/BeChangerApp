@@ -13,14 +13,14 @@ public interface ProductTransactionHistoryRepository extends JpaRepository<Produ
     @Query("""
             SELECT history
             FROM ProductTransactionHistory history
-            WHERE history.userId =: userId
+            WHERE history.userId =:userId
             """)
     Page<ProductTransactionHistory> findAllBorrowedProducts(Pageable pageable, String userId);
 
     @Query("""
             SELECT history
             FROM ProductTransactionHistory history
-            WHERE history.product.createdBy =: userId
+            WHERE history.product.createdBy =:userId
             """)
     Page<ProductTransactionHistory> findAllReturnedProducts(Pageable pageable, String userId);
 
@@ -29,18 +29,18 @@ public interface ProductTransactionHistoryRepository extends JpaRepository<Produ
             SELECT
             (COUNT(*) > 0) AS isBorrowed
             FROM ProductTransactionHistory productTransactionHistory
-            WHERE productTransactionHistory.userId =: userId
-            AND productTransactionHistory.product.id =: productId
+            WHERE productTransactionHistory.userId =:userId
+            AND productTransactionHistory.product.id =:productId
             AND productTransactionHistory.returnApproved = false
             """)
-    boolean isAlreadyBorrowedByUser(@Param("productId") Integer productId, @Param("productId") String userId);
+    boolean isAlreadyBorrowedByUser(@Param("productId") Integer productId, @Param("userId") String userId);
 
 
     @Query("""
             SELECT transaction
             FROM ProductTransactionHistory transaction
-            WHERE transaction.userId =: userId
-            AND transaction.product.id =: productId
+            WHERE transaction.userId =:userId
+            AND transaction.product.id =:productId
             AND transaction.returned = false
             AND transaction.returnApproved = false
             """)
@@ -50,8 +50,8 @@ public interface ProductTransactionHistoryRepository extends JpaRepository<Produ
     @Query("""
             SELECT transaction
             FROM ProductTransactionHistory transaction
-            WHERE transaction.product.createdBy =: userId
-            AND transaction.product.id =: productId
+            WHERE transaction.product.createdBy =:userId
+            AND transaction.product.id =:productId
             AND transaction.returned = true
             AND transaction.returnApproved = false
             """)

@@ -13,6 +13,7 @@ public class ProductMapper {
                 .name(request.name())
                 .brand(request.brand())
                 .description(request.description())
+                .identifier(request.identifier())
                 .archived(false)
                 .available(request.available())
                 .build();

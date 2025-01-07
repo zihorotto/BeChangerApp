@@ -31,14 +31,14 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<PageResponse<ProductResponse>> findAllBooks(@RequestParam(name = "page", defaultValue = "0", required = false) int page,
+    public ResponseEntity<PageResponse<ProductResponse>> findAllProducts(@RequestParam(name = "page", defaultValue = "0", required = false) int page,
                                                                       @RequestParam(name = "size", defaultValue = "10", required = false) int size,
                                                                       Authentication connectedUser) {
         return ResponseEntity.ok(service.findAllProducts(page, size, connectedUser));
     }
 
     @GetMapping("/owner")
-    public ResponseEntity<PageResponse<ProductResponse>> findAllBooksByOwner(@RequestParam(name = "page", defaultValue = "0", required = false) int page,
+    public ResponseEntity<PageResponse<ProductResponse>> findAllProductsByOwner(@RequestParam(name = "page", defaultValue = "0", required = false) int page,
                                                                              @RequestParam(name = "size", defaultValue = "10", required = false) int size,
                                                                              Authentication connectedUser) {
         return ResponseEntity.ok(service.findAllProductsByOwner(page, size, connectedUser));
@@ -59,13 +59,13 @@ public class ProductController {
     }
 
     @PatchMapping("/available/{product-id}")
-    public ResponseEntity<Integer> updaeAvailableStatus(@PathVariable("product-id") Integer productId,
+    public ResponseEntity<Integer> updateAvailableStatus(@PathVariable("product-id") Integer productId,
                                                         Authentication connectedUser) {
         return ResponseEntity.ok(service.updateAvailableStatus(productId, connectedUser));
     }
 
     @PatchMapping("/archived/{product-id}")
-    public ResponseEntity<Integer> updaeArchivedStatus(@PathVariable("product-id") Integer productId,
+    public ResponseEntity<Integer> updateArchivedStatus(@PathVariable("product-id") Integer productId,
                                                        Authentication connectedUser) {
         return ResponseEntity.ok(service.updateArchivedStatus(productId, connectedUser));
     }
