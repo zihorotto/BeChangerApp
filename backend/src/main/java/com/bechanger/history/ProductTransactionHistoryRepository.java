@@ -44,7 +44,7 @@ public interface ProductTransactionHistoryRepository extends JpaRepository<Produ
             AND transaction.returned = false
             AND transaction.returnApproved = false
             """)
-    Optional<ProductTransactionHistory> findByProductIdAndUserId(@Param("productId") Integer productId, @Param("productId") String userId);
+    Optional<ProductTransactionHistory> findByProductIdAndUserId(@Param("productId") Integer productId, @Param("userId") String userId);
 
 
     @Query("""
@@ -55,5 +55,5 @@ public interface ProductTransactionHistoryRepository extends JpaRepository<Produ
             AND transaction.returned = true
             AND transaction.returnApproved = false
             """)
-    Optional<ProductTransactionHistory> findByProductIdAndOwnerId(@Param("productId") Integer productId, @Param("productId") String userId);
+    Optional<ProductTransactionHistory> findByProductIdAndOwnerId(@Param("productId") Integer productId, @Param("userId") String userId);
 }

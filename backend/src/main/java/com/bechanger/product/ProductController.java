@@ -20,9 +20,8 @@ public class ProductController {
 
 
     @PostMapping
-    public ResponseEntity<Integer> saveProduct(@Valid @RequestBody ProductRequest request,
-                                               Authentication connectedUser) {
-        return ResponseEntity.ok(service.save(request, connectedUser));
+    public ResponseEntity<Integer> saveProduct(@Valid @RequestBody ProductRequest request) {
+        return ResponseEntity.ok(service.save(request));
     }
 
     @GetMapping("{product-id}")

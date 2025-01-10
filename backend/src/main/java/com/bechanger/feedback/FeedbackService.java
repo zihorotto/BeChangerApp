@@ -30,7 +30,6 @@ public class FeedbackService {
         if (product.isArchived() || !product.isAvailable()) {
             throw new OperationNotPermittedException("You can not give a feedback for an archived or not available product.");
         }
-        User user = ((User) connectedUser.getPrincipal());
         if (Objects.equals(product.getCreatedBy(), connectedUser.getName())) {
             throw new OperationNotPermittedException("You can not give a feedback to your own product");
         }

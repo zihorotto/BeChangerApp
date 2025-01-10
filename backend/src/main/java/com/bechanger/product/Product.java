@@ -30,10 +30,6 @@ public class Product extends BaseEntity {
     private boolean archived;
     private boolean available; // shareable
 
-    //@ManyToOne
-    //@JoinColumn(name = "owner_id")
-    //private User owner;
-
     @OneToMany(mappedBy = "product")
     private List<Feedback> feedbacks;
 
