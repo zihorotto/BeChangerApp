@@ -1,8 +1,15 @@
 <p-toast />
 <div class="card">
     <p-menubar [model]="items">
+        <!-- <ng-template pTemplate="item">
+        </ng-template> -->
         <ng-template pTemplate="end">
             <div class="flex align-items-center gap-2">
+                @if (unreadNotificationsCount) {
+                    <i class="pi pi-bell mr-4 p-text-secondary" (click)="readNotifications()" severity="warning" pBadge style="font-size: 1.5rem; cursor: pointer;" [value]="unreadNotificationsCount"></i>
+                } @else {
+                    <i class="pi pi-bell mr-4 p-text-secondary"  style="font-size: 1.5rem"></i>
+                }
                 <button pButton type="button" label="Logout" severity="secondary" icon="pi pi-power-off" (click)="logout()"></button>
             </div>
         </ng-template>

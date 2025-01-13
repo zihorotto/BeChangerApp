@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { MenuItem, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { MenubarModule } from 'primeng/menubar';
+import { BadgeModule } from 'primeng/badge';
 import { KeycloakService } from '../../services/keycloak/keycloak.service';
 import * as Stomp from 'stompjs';
 import SockJS from 'sockjs-client';
@@ -11,7 +12,7 @@ import { ToastModule } from 'primeng/toast';
 @Component({
   selector: 'app-menu',
   standalone: true,
-  imports: [MenubarModule, ButtonModule, ToastModule],
+  imports: [MenubarModule, ButtonModule, ToastModule, BadgeModule],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss',
   providers: [MessageService],
@@ -42,29 +43,39 @@ export class MenuComponent {
             `/user/${this.keycloakService.keycloak.tokenParsed?.sub}/notifications`,
             (message: any) => {
               const notification = JSON.parse(message.body);
+              let notificationMessage;
               if (notification) {
-                this.notifications.unshift(notification);
                 switch (notification.status) {
                   case 'BORROWED':
+                    notificationMessage = { severity: 'success', summary: notification.bookTitle, detail: notification.message }
                     this.messageService.add({ severity: 'success', summary: notification.bookTitle, detail: notification.message });
+                    this.notifications.unshift(notificationMessage);
                     break;
                   case 'RETURNED':
+                    notificationMessage = { severity: 'info', summary: notification.bookTitle, detail: notification.message }
                     this.messageService.add({ severity: 'info', summary: notification.bookTitle, detail: notification.message });
+                    this.notifications.unshift(notificationMessage);
                     break;
                   case 'RETURN_APPROVED':
+                    notificationMessage = { severity: 'info', summary: notification.bookTitle, detail: notification.message }
                     this.messageService.add({ severity: 'info', summary: notification.bookTitle, detail: notification.message });
+                    this.notifications.unshift(notificationMessage);
                     break;
                 }
                 this.unreadNotificationsCount++;
               }
-
-
             }, () => {
               console.error('Error while connecting to webSocket');
             });
         }
       );
     }
+  }
+
+  readNotifications() {
+    this.unreadNotificationsCount = 0;
+    this.messageService.addAll(this.notifications);
+    this.notifications = [];
   }
 
   navigationHandler() {
@@ -78,7 +89,7 @@ export class MenuComponent {
       },
       {
         label: 'My products',
-        icon: 'pi pi-star',
+        icon: 'pi pi-list',
         command: () => {
           this.router.navigate(['/products/my-products']);
         },
@@ -92,7 +103,7 @@ export class MenuComponent {
       },
       {
         label: 'Borrowed products',
-        icon: 'pi pi-star',
+        icon: 'pi pi-shopping-cart',
         command: () => {
           this.router.navigate(['/products/borrowed-products']);
         },
@@ -102,7 +113,5 @@ export class MenuComponent {
 
   async logout() {
     this.keycloakService.logout();
-    // this.router.navigate(['/login']);
-    // localStorage.removeItem('user');
   }
 }
