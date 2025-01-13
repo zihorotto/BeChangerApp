@@ -10,6 +10,8 @@ import { ReturnDialogComponent } from '../../components/return-dialog/return-dia
 import { BorrowedProductResponse } from '../../services/models/borrowed-product-response';
 import { ProductService } from '../../services/product/product.service';
 import { PageResponseBorrowedProductResponse } from '../../services/models/page-response-borrowed-product-response';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-returned-products',
@@ -22,10 +24,11 @@ import { PageResponseBorrowedProductResponse } from '../../services/models/page-
     CommonModule,
     FormsModule,
     PaginatorModule,
-    ReturnDialogComponent,
+    ToastModule,
   ],
   templateUrl: './returned-products.component.html',
   styleUrl: './returned-products.component.scss',
+  providers: [MessageService]
 })
 export class ReturnedProductsComponent implements OnInit {
   cover = 'https://primefaces.org/cdn/primeng/images/card-ng.jpg';
@@ -35,12 +38,12 @@ export class ReturnedProductsComponent implements OnInit {
   allProducts: BorrowedProductResponse[] = [];
 
   item: BorrowedProductResponse = {};
-  visible = false;
 
   private productService = inject(ProductService);
+  private messageService = inject(MessageService);
 
   ngOnInit() {
-    this.findAllReturnedProducts;
+    this.findAllReturnedProducts();
   }
 
   onPageChange(event: PaginatorState) {
@@ -64,9 +67,23 @@ export class ReturnedProductsComponent implements OnInit {
   }
 
   approve(product: BorrowedProductResponse) {
-    console.log(product);
+    if (!product.returned) {
+      return;
+    }
     this.item = product;
-    console.log(this.item);
-    // this.visible = true;
+    this.productService
+      .approveReturnBorrowProduct({
+        'product-id': this.item.id as number,
+      })
+      .subscribe({
+        next: () => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: `You successfully approve that ${product.name} returned`,
+          });
+          this.findAllReturnedProducts();
+        },
+      });
   }
 }

@@ -49,4 +49,4 @@
     </div>
 </div>
 
-<app-return-dialog *ngIf="visible" [item]="item" [visible]="visible"></app-return-dialog>
+<app-return-dialog *ngIf="visible" [item]="item" [visible]="visible" (visibleChange)="visibleChange($event)"></app-return-dialog>

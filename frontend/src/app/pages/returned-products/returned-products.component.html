@@ -1,3 +1,4 @@
+<p-toast />
 <div class="surface-ground px-4 py-8 md:px-6 lg:px-8">
     <div class="card">
         <p-table [value]="allProducts" [tableStyle]="{'min-width': '60rem'}">
@@ -22,14 +23,18 @@
                     <td>{{product.brand}}</td>
                     <td>{{product.id}}</td>
                     <td><p-rating [(ngModel)]="product.rate" [readonly]="true" [cancel]="false" /></td>
-                    <td><p-tag *ngIf="product.returned" value="Return approved" severity="success" /></td>
+                    <td>
+                        <p-tag *ngIf="product.returnedApproved && product.returned" value="Return approved" severity="success" />
+                        <p-tag *ngIf="!product.returned" value="Not yet returned" severity="info" />
+                        <p-tag *ngIf="!product.returnedApproved && product.returned" value="Not yet approved" severity="warning" />
+                    </td>
                     <td>
                         <div class="card flex justify-content-center">
                             <p-button 
                                 label="Approve"
                                 [outlined]="true"
                                 icon="pi pi-check"
-                                [disabled]="product.returned"
+                                [disabled]="product.returnedApproved || !product.returned"
                                 (onClick)="approve(product)"
                             />
                         </div>

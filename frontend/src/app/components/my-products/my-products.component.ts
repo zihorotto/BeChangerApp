@@ -10,7 +10,7 @@ import { ProductCardComponent } from '../product-card/product-card.component';
 @Component({
   selector: 'app-my-products',
   standalone: true,
-  imports: [ProductCardComponent, PaginatorModule, ButtonModule],
+  imports: [ProductCardComponent, PaginatorModule, ButtonModule, ],
   templateUrl: './my-products.component.html',
   styleUrl: './my-products.component.scss'
 })

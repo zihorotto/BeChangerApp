@@ -126,6 +126,6 @@ export class ProductService {
       }
     }
     
-    return this.http.get<PageResponseBorrowedProductResponse>(`${this.rootUrl}/products/borrower`, { params: httpParams });
+    return this.http.get<PageResponseBorrowedProductResponse>(`${this.rootUrl}/products/borrowed`, { params: httpParams });
   }
 }
