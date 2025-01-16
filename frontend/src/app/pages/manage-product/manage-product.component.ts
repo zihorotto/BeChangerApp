@@ -65,34 +65,30 @@ export class ManageProductComponent implements OnInit{
   }
 
   save() {
-    console.log(this.productRequest);
     this.productService.saveProduct(this.productRequest).subscribe({
       next: (productId:number) => {
         this.messageService.add({ severity: 'success', summary: 'Success', detail: `You successfully added ${this.productRequest.name}` });
 
+        this.productService.uploadProductCoverPicture({
+          'product-id': productId,
+          body: {
+            file: this.selectedProductCover || new Blob()
+          }
+        }).subscribe({
+          next: () => {
+            this.router.navigate(['/products/my-products']);
+          }
+        });
         this.router.navigate(['/products/my-products']);
-
-        // this.productService.uploadProductCoverPicture({
-        //   'product-id': productId,
-        //   body: {
-        //     file: this.selectedProductCover || new Blob()
-        //   }
-        // }).subscribe({
-        //   next: () => {
-        //     this.router.navigate(['/products/my-products']);
-        //   }
-        // });
       },
       error: (err) => {
-        console.log(err.error);
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong' });
       }
     });
   }
 
   onUpload(event: any) {
-    this.selectedProductCover = event.files[0];
-    console.log(this.selectedProductCover);
+    this.selectedProductCover = event.target.files[0];
     if (this.selectedProductCover) {
 
       const reader = new FileReader();

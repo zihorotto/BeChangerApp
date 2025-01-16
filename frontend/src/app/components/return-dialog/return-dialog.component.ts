@@ -53,7 +53,6 @@ export class ReturnDialogComponent implements OnInit {
       })
       .subscribe({
         next: () => {
-          console.log('Product returned');
           this.closeDialog();
           if (
             this.feedbackRequest.comment.length > 0 &&
@@ -69,7 +68,6 @@ export class ReturnDialogComponent implements OnInit {
     debugger;
     this.feedbackService.saveFeedback(this.feedbackRequest).subscribe({
       next: () => {
-        console.log('Feedback saved');
       },
     });
   }

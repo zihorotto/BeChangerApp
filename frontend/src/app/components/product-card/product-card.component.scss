@@ -13,3 +13,21 @@
 :host ::ng-deep .p-card .p-card-footer {
     padding: 0;
 }
+
+:host ::ng-deep .p-card .p-card-body {
+    padding: 4px 16px;
+}
+
+img {
+    max-width: 360px;
+    max-height: 190px;
+    object-fit: contain;
+    object-position: 50% 50%;
+}
+
+p-tag {
+    position: relative;
+    left: 290px;
+    top: 290px;
+    z-index: 2px;
+}

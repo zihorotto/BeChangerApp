@@ -18,7 +18,6 @@ public class ProductController {
 
     private final ProductService service;
 
-
     @PostMapping
     public ResponseEntity<Integer> saveProduct(@Valid @RequestBody ProductRequest request) {
         return ResponseEntity.ok(service.save(request));
@@ -89,7 +88,7 @@ public class ProductController {
         return ResponseEntity.ok(service.approveReturnBorrowedProduct(productId, connectedUser));
     }
 
-    @PostMapping(value = "/cover/{product-id}", consumes = "multipart/form-date")
+    @PostMapping(value = "/cover/{product-id}", consumes = "multipart/form-data")
     public ResponseEntity<?> uploadProductCoverPicture(@PathVariable("product-id") Integer productId,
                                                        @Parameter()
                                                        @RequestPart("file") MultipartFile file,

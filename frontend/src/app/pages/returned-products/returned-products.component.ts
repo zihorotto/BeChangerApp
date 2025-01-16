@@ -60,7 +60,6 @@ export class ReturnedProductsComponent implements OnInit {
       })
       .subscribe({
         next: (response: PageResponseBorrowedProductResponse) => {
-          console.log(response);
           this.allProducts = response.content || [];
         },
       });

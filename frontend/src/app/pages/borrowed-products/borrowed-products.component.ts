@@ -71,7 +71,6 @@ export class BorrowedProductsComponent implements OnInit {
   }
 
   showDialog(product: BorrowedProductResponse) {
-    console.log(product);
     this.item = product;
     this.visible = true;
   }

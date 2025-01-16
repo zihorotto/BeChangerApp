@@ -50,7 +50,14 @@
             <div class="flex flex-column align-items-center flex-or">
                 <span class="font-medium text-900 mb-2">Cover Picture</span>
                 <img [src]=" selectedPicture || 'https://primefaces.org/cdn/primeng/images/card-ng.jpg'" class="h-10rem w-20rem mb-4">
-                <p-fileUpload 
+                <input
+                    (change)="onUpload($event)"
+                    class="form-control"
+                    type="file"
+                    id="formFile"
+                    accept="image/*"
+                    >
+                <!-- <p-fileUpload 
                 mode="basic" 
                 name="demo[]" 
                 chooseIcon="pi pi-upload" 
@@ -58,7 +65,7 @@
                 accept="image/*" maxFileSize="1000000" 
                 (onUpload)="onUpload($event)" 
                 [auto]="true"
-                chooseLabel="Browse"/>
+                chooseLabel="Browse"/> -->
             </div>
         </div>
     </div>
