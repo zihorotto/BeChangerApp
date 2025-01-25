@@ -7,6 +7,8 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { ProductService } from '../../services/product/product.service';
 import { ProductResponse } from '../../services/models/product-response';
 import { ProductRequest } from '../../services/models/product-request';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 interface UploadEvent {
   originalEvent: Event;
@@ -16,9 +18,10 @@ interface UploadEvent {
 @Component({
   selector: 'app-manage-product',
   standalone: true,
-  imports: [DividerModule, InputSwitchModule, FormsModule, FileUploadModule,],
+  imports: [DividerModule, InputSwitchModule, FormsModule, FileUploadModule, ToastModule],
   templateUrl: './manage-product.component.html',
-  styleUrl: './manage-product.component.scss'
+  styleUrl: './manage-product.component.scss',
+  providers: [MessageService]
 })
 export class ManageProductComponent implements OnInit{
   productRequest: ProductRequest = {
@@ -35,6 +38,8 @@ export class ManageProductComponent implements OnInit{
   router = inject(Router);
   activatedRoute = inject(ActivatedRoute)
   private productService = inject(ProductService);
+  private messageService = inject(MessageService);
+
   productId:number = 0;
 
   ngOnInit(): void {
@@ -60,32 +65,30 @@ export class ManageProductComponent implements OnInit{
   }
 
   save() {
-    console.log(this.productRequest);
     this.productService.saveProduct(this.productRequest).subscribe({
       next: (productId:number) => {
-        this.router.navigate(['/products/my-products']);
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: `You successfully added ${this.productRequest.name}` });
 
-        // this.productService.uploadProductCoverPicture({
-        //   'product-id': productId,
-        //   body: {
-        //     file: this.selectedProductCover || new Blob()
-        //   }
-        // }).subscribe({
-        //   next: () => {
-        //     this.router.navigate(['/products/my-products']);
-        //   }
-        // });
+        this.productService.uploadProductCoverPicture({
+          'product-id': productId,
+          body: {
+            file: this.selectedProductCover || new Blob()
+          }
+        }).subscribe({
+          next: () => {
+            this.router.navigate(['/products/my-products']);
+          }
+        });
+        this.router.navigate(['/products/my-products']);
       },
       error: (err) => {
-        console.log(err.error);
-        //this.errorMsg = err.error.validationErrors;
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong' });
       }
     });
   }
 
   onUpload(event: any) {
-    this.selectedProductCover = event.files[0];
-    console.log(this.selectedProductCover);
+    this.selectedProductCover = event.target.files[0];
     if (this.selectedProductCover) {
 
       const reader = new FileReader();

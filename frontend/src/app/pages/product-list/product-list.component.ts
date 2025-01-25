@@ -4,23 +4,24 @@ import { ProductService } from '../../services/product/product.service';
 import { PageResponseProductResponse } from '../../services/models/page-response-product-response';
 import { ProductResponse } from '../../services/models/product-response';
 import { ProductCardComponent } from '../../components/product-card/product-card.component';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [ProductCardComponent, PaginatorModule],
+  imports: [ProductCardComponent, PaginatorModule, ToastModule],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss',
+  providers: [MessageService]
 })
 export class ProductListComponent implements OnInit {
   page = 0;
   size = 10;
 
-  message:string = '';
-  level:string = 'success';
-
   allProduct: PageResponseProductResponse = {};
   private productService = inject(ProductService);
+  private messageService = inject(MessageService);
 
   ngOnInit(): void {
     this.findAllProduct();
@@ -46,20 +47,14 @@ export class ProductListComponent implements OnInit {
   }
 
   borrowProduct(product: ProductResponse) {
-    console.info('Borrowing product: ' + product.name);
-    this.message = '';
-    this.level = 'success';
     this.productService.borrowProduct({
       'product-id': product.id as number
     }).subscribe({
       next: () => {
-        this.level = 'success';
-        this.message = 'Product successfully added to your list';
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: `You successfully brrowed ${product.name}` });
       },
       error: (err) => {
-        console.log(err);
-        this.level = 'error';
-        this.message = err.error.error;
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: err.error.error });
       }
     });
   }

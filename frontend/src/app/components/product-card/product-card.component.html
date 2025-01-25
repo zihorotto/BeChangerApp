@@ -1,8 +1,9 @@
+<p-tag *ngIf="tag.isVisiable && manage" [value]="tag.title" [severity]="tag.title == 'Shared' ? 'success' : 'warning'"/>
 <p-card [header]="product.name " [subheader]="product.brand" [style]="{ width: '360px'}">
+
     <ng-template pTemplate="header">
         <img alt="Card" [src]="coverImage" />
     </ng-template>
-    <p-tag *ngIf="tag.isVisiable && manage" [value]="tag.title" [severity]="tag.title == 'Shared' ? 'success' : 'warning'"/>
     <p class="details">{{product.description}}</p>
 
     <ng-template pTemplate="footer">

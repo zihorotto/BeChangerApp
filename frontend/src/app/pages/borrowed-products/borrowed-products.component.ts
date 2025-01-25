@@ -14,20 +14,29 @@ import { BorrowedProductResponse } from '../../services/models/borrowed-product-
 @Component({
   selector: 'app-borrowed-products',
   standalone: true,
-  imports: [TableModule, TagModule, RatingModule, ButtonModule, CommonModule, FormsModule, PaginatorModule, ReturnDialogComponent],
+  imports: [
+    TableModule,
+    TagModule,
+    RatingModule,
+    ButtonModule,
+    CommonModule,
+    FormsModule,
+    PaginatorModule,
+    ReturnDialogComponent,
+  ],
   templateUrl: './borrowed-products.component.html',
-  styleUrl: './borrowed-products.component.scss'
+  styleUrl: './borrowed-products.component.scss',
 })
 export class BorrowedProductsComponent implements OnInit {
   cover = 'https://primefaces.org/cdn/primeng/images/card-ng.jpg';
   page = 0;
   size = 10;
 
-  item:BorrowedProductResponse = {};
+  item: BorrowedProductResponse = {};
   visible = false;
   private productService = inject(ProductService);
-  allProduct:BorrowedProductResponse[] = [];
-  
+  allProduct: BorrowedProductResponse[] = [];
+
   ngOnInit() {
     this.findAllBorrowedProducts();
   }
@@ -51,20 +60,23 @@ export class BorrowedProductsComponent implements OnInit {
       });
   }
   getSeverity(product: BorrowedProductResponse) {
-    let status = product.returnedApproved? 'RETURNEDAPPROVED' :'RETURNED';
+    let status = product.returnedApproved ? 'RETURNEDAPPROVED' : 'RETURNED';
     switch (status) {
-        case 'RETURNED':
-            return 'warning';
-        case 'RETURNEDAPPROVED':
-            return 'success';
+      case 'RETURNED':
+        return 'warning';
+      case 'RETURNEDAPPROVED':
+        return 'success';
     }
     return 'success';
   }
 
   showDialog(product: BorrowedProductResponse) {
-    console.log(product);
     this.item = product;
-    console.log(this.item);
     this.visible = true;
+  }
+
+  visibleChange(evn: boolean) {
+    this.visible = evn;
+    this.findAllBorrowedProducts();
   }
 }

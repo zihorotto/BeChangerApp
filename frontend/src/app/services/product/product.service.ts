@@ -57,7 +57,9 @@ export class ProductService {
   }
 
   uploadProductCoverPicture(params: UploadProductCoverPicture$Params): Observable<{}> {
-    return this.http.post<{}>(`${this.rootUrl}/products/cover/${params['product-id']}`, params.body);
+    const formData = new FormData();
+    formData.append('file', params.body?.file || new Blob(), 'filename.jpg');
+    return this.http.post<{}>(`${this.rootUrl}/products/cover/${params['product-id']}`, formData);
   }
 
   borrowProduct(params: productId): Observable<number> {
@@ -126,6 +128,6 @@ export class ProductService {
       }
     }
     
-    return this.http.get<PageResponseBorrowedProductResponse>(`${this.rootUrl}/products/borrower`, { params: httpParams });
+    return this.http.get<PageResponseBorrowedProductResponse>(`${this.rootUrl}/products/borrowed`, { params: httpParams });
   }
 }

@@ -36,7 +36,7 @@
                 "tags": [
                     "Product"
                 ],
-                "operationId": "findAllBooks",
+                "operationId": "findAllProducts",
                 "parameters": [
                     {
                         "name": "page",
@@ -343,7 +343,7 @@
                 "tags": [
                     "Product"
                 ],
-                "operationId": "updaeAvailableStatus",
+                "operationId": "updateAvailableStatus",
                 "parameters": [
                     {
                         "name": "product-id",
@@ -480,7 +480,7 @@
                 "tags": [
                     "Product"
                 ],
-                "operationId": "findAllBooksByOwner",
+                "operationId": "findAllProductsByOwner",
                 "parameters": [
                     {
                         "name": "page",

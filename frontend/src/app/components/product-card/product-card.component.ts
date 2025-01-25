@@ -36,7 +36,6 @@ export class ProductCardComponent implements OnInit{
 
   constructor() {
     this.tag.isVisiable = false;
-    this.coverImage = this.getCoverImage();
   }
 
   ngOnInit(): void {
@@ -48,6 +47,7 @@ export class ProductCardComponent implements OnInit{
       this.tag.isVisiable = true;
       this.tag.title = 'Archived';
     }
+    this.coverImage = this.getCoverImage();
   }
 
   getCoverImage() {
