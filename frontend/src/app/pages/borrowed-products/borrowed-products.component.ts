@@ -63,7 +63,7 @@ export class BorrowedProductsComponent implements OnInit {
     let status = product.returnedApproved ? 'RETURNEDAPPROVED' : 'RETURNED';
     switch (status) {
       case 'RETURNED':
-        return 'warning';
+        return 'warn';
       case 'RETURNEDAPPROVED':
         return 'success';
     }

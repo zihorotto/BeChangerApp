@@ -2,13 +2,13 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DividerModule } from 'primeng/divider';
-import { InputSwitchModule } from 'primeng/inputswitch';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ProductService } from '../../services/product/product.service';
 import { ProductResponse } from '../../services/models/product-response';
 import { ProductRequest } from '../../services/models/product-request';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { ToggleSwitch } from 'primeng/toggleswitch';
 
 interface UploadEvent {
   originalEvent: Event;
@@ -18,7 +18,7 @@ interface UploadEvent {
 @Component({
   selector: 'app-manage-product',
   standalone: true,
-  imports: [DividerModule, InputSwitchModule, FormsModule, FileUploadModule, ToastModule],
+  imports: [DividerModule, ToggleSwitch, FormsModule, FileUploadModule, ToastModule],
   templateUrl: './manage-product.component.html',
   styleUrl: './manage-product.component.scss',
   providers: [MessageService]

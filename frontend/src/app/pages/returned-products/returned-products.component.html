@@ -22,12 +22,8 @@
                     <td>{{product.name}}</td>
                     <td>{{product.brand}}</td>
                     <td>{{product.id}}</td>
-                    <td><p-rating [(ngModel)]="product.rate" [readonly]="true" [cancel]="false" /></td>
-                    <td>
-                        <p-tag *ngIf="product.returnedApproved && product.returned" value="Return approved" severity="success" />
-                        <p-tag *ngIf="!product.returned" value="Not yet returned" severity="info" />
-                        <p-tag *ngIf="!product.returnedApproved && product.returned" value="Not yet approved" severity="warning" />
-                    </td>
+                    <td><p-rating [(ngModel)]="product.rate" [readonly]="true"/></td>
+                    <td><p-tag *ngIf="product.returned" value="Return approved" severity="success" /></td>
                     <td>
                         <div class="card flex justify-content-center">
                             <p-button 

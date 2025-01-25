@@ -28,14 +28,14 @@
                     <input [(ngModel)]="productRequest.identifier" id="identifier" type="text" pinputtext="" class="p-inputtext p-component p-element">
                 </div>
                 <div class="flex align-items-center pb-3">
-                    <p-inputSwitch [(ngModel)]="productRequest.available" inputid="privacy2" class="p-element">
+                    <p-toggleswitch [(ngModel)]="productRequest.available" inputid="privacy2" class="p-element">
                         <div class="p-inputswitch p-component">
                             <div class="p-hidden-accessible">
                                 <input type="checkbox" role="switch" id="privacy2" aria-checked="false">
                             </div>
                             <span class="p-inputswitch-slider"></span>
                         </div>
-                    </p-inputSwitch>
+                    </p-toggleswitch>
                     <span class="ml-2 text-900">Share me!</span>
                 </div>
 

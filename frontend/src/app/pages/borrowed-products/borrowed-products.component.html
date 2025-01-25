@@ -21,7 +21,7 @@
                     <td>{{product.name}}</td>
                     <td>{{product.brand}}</td>
                     <td>{{product.identifier}}</td>
-                    <td><p-rating [(ngModel)]="product.rate" [readonly]="true" [cancel]="false" /></td>
+                    <td><p-rating [(ngModel)]="product.rate" [readonly]="true"/></td>
                     <td><p-tag *ngIf="product.returned" [value]="product.returnedApproved? 'Returned approved':'Returned'" [severity]="getSeverity(product)" /></td>
                     <td>
                         <div class="card flex justify-content-center">

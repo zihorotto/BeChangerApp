@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { CardModule } from 'primeng/card';
+import { Card } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { RatingModule } from 'primeng/rating';
 import { FormsModule } from '@angular/forms';
@@ -11,7 +11,7 @@ import { ProductResponse } from '../../services/models/product-response';
 @Component({
   selector: 'app-product-card',
   standalone: true,
-  imports: [CardModule, ButtonModule, RatingModule, FormsModule, TagModule, CommonModule],
+  imports: [Card, ButtonModule, RatingModule, FormsModule, TagModule, CommonModule],
   templateUrl: './product-card.component.html',
   styleUrl: './product-card.component.scss'
 })

@@ -9,7 +9,6 @@ import {
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
-import { InputTextareaModule } from 'primeng/inputtextarea';
 import { RatingModule } from 'primeng/rating';
 import { BorrowedProductResponse } from '../../services/models/borrowed-product-response';
 import { ProductService } from '../../services/product/product.service';
@@ -19,13 +18,7 @@ import { FeedbackRequest } from '../../services/models/feedback-request';
 @Component({
   selector: 'app-return-dialog',
   standalone: true,
-  imports: [
-    DialogModule,
-    ButtonModule,
-    FormsModule,
-    InputTextareaModule,
-    RatingModule,
-  ],
+  imports: [DialogModule, ButtonModule, FormsModule, RatingModule],
   templateUrl: './return-dialog.component.html',
   styleUrl: './return-dialog.component.scss',
 })

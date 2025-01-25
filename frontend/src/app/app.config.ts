@@ -5,6 +5,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { httpTokenInterceptor } from './services/token/interceptor/http-token.interceptor';
 import { KeycloakService } from './services/keycloak/keycloak.service';
+import { providePrimeNG } from 'primeng/config';
+import Aura from '@primeng/themes/aura';
 
 export function kcFactory(kcService: KeycloakService) {
   return () => kcService.init();
@@ -21,6 +23,18 @@ export const appConfig: ApplicationConfig = {
       deps:[KeycloakService],
       useFactory: kcFactory,
       multi: true,
-    }
+    },
+    providePrimeNG({ 
+      theme: {
+          preset: Aura,
+          options: {
+              cssLayer: {
+                  name: 'primeng',
+                  order: 'tailwind-base, primeng, tailwind-utilities'
+              }
+          }
+      }
+  })
+
   ]
 };

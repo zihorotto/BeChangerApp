@@ -2,13 +2,13 @@ import { DOCUMENT } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
-import { InputSwitchModule } from 'primeng/inputswitch';
+import { ToggleSwitch } from 'primeng/toggleswitch';
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, InputSwitchModule, FormsModule],
+  imports: [RouterOutlet, ToggleSwitch, FormsModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   providers: [
@@ -32,8 +32,8 @@ export class AppComponent {
   ) as HTMLLinkElement;
 
   constructor() {
-     this.linkElement.href = this.storage.getItem('THEME') || this.defaultTheme;
-     this.isDarkMode = this.linkElement.href.includes('dark');
+    //  this.linkElement.href = this.storage.getItem('THEME') || this.defaultTheme;
+    //  this.isDarkMode = this.linkElement.href.includes('dark');
   }
 
 

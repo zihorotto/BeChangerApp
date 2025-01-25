@@ -34,16 +34,7 @@
             ],
             "styles": [
               "src/styles.scss",
-              {
-                "input": "src/theme-dark.scss",
-                "bundleName": "theme-dark",
-                "inject": false
-              },
-              {
-                "input": "src/theme-light.scss",
-                "bundleName": "theme-light",
-                "inject": false
-              }
+              "./node_modules/primeicons/primeicons.css"
             ],
             "scripts": []
           },
@@ -102,7 +93,8 @@
               }
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "./node_modules/primeicons/primeicons.css"
             ],
             "scripts": []
           }
