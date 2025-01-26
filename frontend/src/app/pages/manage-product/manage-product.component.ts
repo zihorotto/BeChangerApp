@@ -9,6 +9,8 @@ import { ProductRequest } from '../../services/models/product-request';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { ToggleSwitch } from 'primeng/toggleswitch';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
 
 interface UploadEvent {
   originalEvent: Event;
@@ -18,79 +20,105 @@ interface UploadEvent {
 @Component({
   selector: 'app-manage-product',
   standalone: true,
-  imports: [DividerModule, ToggleSwitch, FormsModule, FileUploadModule, ToastModule],
+  imports: [
+    DividerModule,
+    ToggleSwitch,
+    FormsModule,
+    FileUploadModule,
+    ToastModule,
+    InputTextModule,
+    ButtonModule,
+  ],
   templateUrl: './manage-product.component.html',
   styleUrl: './manage-product.component.scss',
-  providers: [MessageService]
+  providers: [MessageService],
 })
-export class ManageProductComponent implements OnInit{
+export class ManageProductComponent implements OnInit {
   productRequest: ProductRequest = {
     available: false,
     brand: '',
     description: '',
     identifier: '',
-    name: ''
+    name: '',
   };
 
   selectedProductCover: Blob | undefined;
   selectedPicture: string | undefined;
 
   router = inject(Router);
-  activatedRoute = inject(ActivatedRoute)
+  activatedRoute = inject(ActivatedRoute);
   private productService = inject(ProductService);
   private messageService = inject(MessageService);
 
-  productId:number = 0;
+  productId: number = 0;
 
   ngOnInit(): void {
     this.productId = this.activatedRoute.snapshot.params['productId'];
-    
+
     if (this.productId) {
-      this.productService.findProductById({
-        'product-id': this.productId
-      }).subscribe({
-        next: (product: ProductResponse) => {
-         this.productRequest = {
-           id: product.id,
-           name: product.name as string,
-           brand: product.brand as string,
-           identifier: product.identifier as string,
-           description: product.description as string,
-           available: product.available
-         };
-         this.selectedPicture='data:image/jpg;base64,' + product.coverImage;
-        }
-      });
+      this.productService
+        .findProductById({
+          'product-id': this.productId,
+        })
+        .subscribe({
+          next: (product: ProductResponse) => {
+            debugger;
+            this.productRequest = {
+              id: product.id,
+              name: product.name as string,
+              brand: product.brand as string,
+              identifier: product.identifier as string,
+              description: product.description as string,
+              available: product.available,
+            };
+            if (product.coverImage) {
+              this.selectedPicture =
+                'data:image/jpg;base64,' + product.coverImage;
+            } else {
+              this.selectedPicture =
+                'https://primefaces.org/cdn/primeng/images/card-ng.jpg';
+            }
+          },
+        });
     }
   }
 
   save() {
     this.productService.saveProduct(this.productRequest).subscribe({
-      next: (productId:number) => {
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: `You successfully added ${this.productRequest.name}` });
-
-        this.productService.uploadProductCoverPicture({
-          'product-id': productId,
-          body: {
-            file: this.selectedProductCover || new Blob()
-          }
-        }).subscribe({
-          next: () => {
-            this.router.navigate(['/products/my-products']);
-          }
+      next: (productId: number) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: `You successfully added ${this.productRequest.name}`,
         });
+
+        this.productService
+          .uploadProductCoverPicture({
+            'product-id': productId,
+            body: {
+              file: this.selectedProductCover || new Blob(),
+            },
+          })
+          .subscribe({
+            next: () => {
+              this.router.navigate(['/products/my-products']);
+            },
+          });
         this.router.navigate(['/products/my-products']);
       },
       error: (err) => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong' });
-      }
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Something went wrong',
+        });
+      },
     });
   }
 
   onUpload(event: any) {
     this.selectedProductCover = event.target.files[0];
     if (this.selectedProductCover) {
-
       const reader = new FileReader();
       reader.onload = () => {
         this.selectedPicture = reader.result as string;

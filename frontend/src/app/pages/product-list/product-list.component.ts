@@ -6,18 +6,27 @@ import { ProductResponse } from '../../services/models/product-response';
 import { ProductCardComponent } from '../../components/product-card/product-card.component';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { ProgressSpinner } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [ProductCardComponent, PaginatorModule, ToastModule],
+  imports: [
+    ProductCardComponent,
+    PaginatorModule,
+    ToastModule,
+    ProgressSpinner,
+  ],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss',
-  providers: [MessageService]
+  providers: [MessageService],
 })
 export class ProductListComponent implements OnInit {
   page = 0;
+  first = 0;
   size = 10;
+  numberOfProducts = 0;
+  isLoaded = true;
 
   allProduct: PageResponseProductResponse = {};
   private productService = inject(ProductService);
@@ -28,6 +37,7 @@ export class ProductListComponent implements OnInit {
   }
 
   findAllProduct() {
+    this.isLoaded = true;
     this.productService
       .findAllProducts({
         page: this.page,
@@ -36,26 +46,39 @@ export class ProductListComponent implements OnInit {
       .subscribe({
         next: (response: PageResponseProductResponse) => {
           this.allProduct = response;
+          this.numberOfProducts = response.totalElements as number;
+          this.isLoaded = false;
         },
       });
   }
 
   onPageChange(event: PaginatorState) {
-    this.page = event.first as number;
+    this.page = event.page as number;
+    this.first = event.first as number;
     this.size = event.rows as number;
     this.findAllProduct();
   }
 
   borrowProduct(product: ProductResponse) {
-    this.productService.borrowProduct({
-      'product-id': product.id as number
-    }).subscribe({
-      next: () => {
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: `You successfully brrowed ${product.name}` });
-      },
-      error: (err) => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: err.error.error });
-      }
-    });
+    this.productService
+      .borrowProduct({
+        'product-id': product.id as number,
+      })
+      .subscribe({
+        next: () => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: `You successfully brrowed ${product.name}`,
+          });
+        },
+        error: (err) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: err.error.error,
+          });
+        },
+      });
   }
 }

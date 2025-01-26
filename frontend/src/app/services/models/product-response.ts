@@ -5,6 +5,7 @@
 export interface ProductResponse {
   archived?: boolean;
   available?: boolean;
+  borrowed?: boolean;
   brand?: string;
   coverImage?: string;
   description?: string;

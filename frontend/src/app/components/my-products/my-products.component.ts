@@ -6,63 +6,98 @@ import { ProductService } from '../../services/product/product.service';
 import { PageResponseProductResponse } from '../../services/models/page-response-product-response';
 import { ProductResponse } from '../../services/models/product-response';
 import { ProductCardComponent } from '../product-card/product-card.component';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { ProgressSpinner } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-my-products',
   standalone: true,
-  imports: [ProductCardComponent, PaginatorModule, ButtonModule, ],
+  imports: [
+    ProductCardComponent,
+    PaginatorModule,
+    ButtonModule,
+    ToastModule,
+    ProgressSpinner,
+  ],
   templateUrl: './my-products.component.html',
-  styleUrl: './my-products.component.scss'
+  styleUrl: './my-products.component.scss',
+  providers: [MessageService],
 })
 export class MyProductsComponent implements OnInit {
   page = 0;
+  first = 0;
   size = 10;
+  numberOfProducts = 0;
+  isLoaded = true;
 
   allProduct: PageResponseProductResponse = {};
   private productService = inject(ProductService);
+  private messageService = inject(MessageService);
   router = inject(Router);
 
   ngOnInit(): void {
-    this.findAllProductsByOwner()
+    this.findAllProductsByOwner();
   }
 
   findAllProductsByOwner() {
-    this.productService.findAllProductsByOwner({
-      page: this.page,
-      size: this.size,
-    }).subscribe({
-      next: (response:PageResponseProductResponse) => {
-        this.allProduct = response;
-      }
-    });
+    this.isLoaded = true;
+    this.productService
+      .findAllProductsByOwner({
+        page: this.page,
+        size: this.size,
+      })
+      .subscribe({
+        next: (response: PageResponseProductResponse) => {
+          this.allProduct = response;
+          this.numberOfProducts = response.totalElements as number;
+          this.isLoaded = false;
+        },
+      });
   }
 
   onPageChange(event: PaginatorState) {
-    this.page = event.first as number;
+    debugger;
+    this.page = event.page as number;
+    this.first = event.first as number;
     this.size = event.rows as number;
     this.findAllProductsByOwner();
   }
 
   archiveProduct(product: ProductResponse) {
     console.info('Archiving product: ' + product.name);
-    this.productService.updateArchivedStatus({
-      'product-id': product.id as number
-    }).subscribe({
-      next: () => {
-        product.available = !product.available;
-      }
-    });
+    this.productService
+      .updateArchivedStatus({
+        'product-id': product.id as number,
+      })
+      .subscribe({
+        next: () => {
+          product.available = !product.available;
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: `You successfully archived the ${product.name}`,
+          });
+        },
+      });
   }
 
   shareProduct(product: ProductResponse) {
     console.info('Sharing product: ' + product.name);
-    this.productService.updateAvailableStatus({
-      'product-id': product.id as number
-    }).subscribe({
-      next: () => {
-        product.available = !product.available;
-      }
-    });
+    this.productService
+      .updateAvailableStatus({
+        'product-id': product.id as number,
+      })
+      .subscribe({
+        next: () => {
+          product.available = !product.available;
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: `You successfully shared the ${product.name}`,
+          });
+        },
+      });
   }
 
   editProduct(product: ProductResponse) {

@@ -1,36 +1,31 @@
-<p-card
-  [header]="product.name"
-  [subheader]="product.brand"
-  [style]="{ width: '360px' }"
->
+<p-card [style]="{ width: '360px' }">
   <ng-template pTemplate="header">
-    <!-- <img alt="Card" [src]="coverImage" /> -->
+    <img alt="Card" class="w-full" [src]="coverImage" />
   </ng-template>
-  <p-tag
-    *ngIf="tag.isVisiable && manage"
-    [value]="tag.title"
-    [severity]="tag.title == 'Shared' ? 'success' : 'warn'"
-  />
-  <p class="details">{{ product.description }}</p>
-
+  <ng-template pTemplate="title">
+    <div class="flex flex-row items-center justify-between">
+      <p>{{ product.name }}</p>
+      <p-tag class="z-50" [value]="tagTitle" [severity]="getSeverity()" />
+    </div>
+  </ng-template>
+  <ng-template pTemplate="subtitle">{{ product.brand }}</ng-template>
+  <p-scrollpanel [style]="{ width: '100%', height: '50px' }">
+    <p>{{ product.description }}</p>
+  </p-scrollpanel>
   <ng-template pTemplate="footer">
-    <div class="flex justify-content-between align-items-center">
-      <div>
-        @if (product.rate) {
-        <p-rating [(ngModel)]="product.rate" [readonly]="true" />
-        }
-      </div>
-
-      @if (manage) {
-      <div>
+    <div class="flex flex-row items-center justify-between justify-end">
+      <div class="button-container">
+        @if (manage) {
         <p-button
-          (onClick)="onArchive()"
-          icon="pi pi-trash"
+          *ngIf="product.available === true"
+          (onClick)="onShare()"
+          icon="pi pi-eye-slash"
           [rounded]="true"
           [text]="true"
           severity="warn"
         />
         <p-button
+          *ngIf="product.available !== true"
           (onClick)="onShare()"
           icon="pi pi-share-alt"
           [rounded]="true"
@@ -42,11 +37,11 @@
           icon="pi pi-pencil"
           [rounded]="true"
           [text]="true"
-          severity="primary"
+          severity="info"
         />
-      </div>
-      } @else {
-      <div>
+
+        } @else {
+
         <!-- <p-button icon="pi pi-info-circle" [rounded]="true" [text]="true" severity="info" /> -->
         <p-button
           (onClick)="onBorrow()"
@@ -56,7 +51,10 @@
           severity="warn"
         />
         <!-- <p-button icon="pi pi-heart-fill " [rounded]="true" [text]="true" severity="danger" /> -->
+        }
       </div>
+      @if (product.rate) {
+      <p-rating [(ngModel)]="product.rate" [readonly]="true" />
       }
     </div>
   </ng-template>

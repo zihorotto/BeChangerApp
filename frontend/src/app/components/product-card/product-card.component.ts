@@ -6,52 +6,73 @@ import { FormsModule } from '@angular/forms';
 import { TagModule } from 'primeng/tag';
 import { CommonModule } from '@angular/common';
 import { ProductResponse } from '../../services/models/product-response';
-
-
+import { ScrollPanel } from 'primeng/scrollpanel';
 @Component({
   selector: 'app-product-card',
   standalone: true,
-  imports: [Card, ButtonModule, RatingModule, FormsModule, TagModule, CommonModule],
+  imports: [
+    Card,
+    ButtonModule,
+    RatingModule,
+    FormsModule,
+    TagModule,
+    CommonModule,
+    ScrollPanel,
+  ],
   templateUrl: './product-card.component.html',
-  styleUrl: './product-card.component.scss'
+  styleUrl: './product-card.component.scss',
 })
-export class ProductCardComponent implements OnInit{
+export class ProductCardComponent implements OnInit {
   @Input() product!: ProductResponse;
   @Input() manage: boolean = false;
 
-  @Output() borrow: EventEmitter<ProductResponse> = new EventEmitter<ProductResponse>();
-   @Output() share: EventEmitter<ProductResponse> = new EventEmitter<ProductResponse>();
-   @Output() archive: EventEmitter<ProductResponse> = new EventEmitter<ProductResponse>();
-   @Output() edit: EventEmitter<ProductResponse> = new EventEmitter<ProductResponse>();
+  @Output() borrow: EventEmitter<ProductResponse> =
+    new EventEmitter<ProductResponse>();
+  @Output() share: EventEmitter<ProductResponse> =
+    new EventEmitter<ProductResponse>();
+  @Output() archive: EventEmitter<ProductResponse> =
+    new EventEmitter<ProductResponse>();
+  @Output() edit: EventEmitter<ProductResponse> =
+    new EventEmitter<ProductResponse>();
 
-   tag = {
-    isVisiable: false,
-    title: '',
-   }
+  tagTitle = '';
 
   // @Output() private addToWaitingList: EventEmitter<ProductResponse> = new EventEmitter<ProductResponse>();
   // @Output() private details: EventEmitter<ProductResponse> = new EventEmitter<ProductResponse>();
-  
+
   coverImage: string | undefined;
 
-  constructor() {
-    this.tag.isVisiable = false;
-  }
-
   ngOnInit(): void {
-    if(this.product.available){
-      this.tag.isVisiable = true;
-      this.tag.title = 'Shared';
-    }
-    if(this.product.archived){
-      this.tag.isVisiable = true;
-      this.tag.title = 'Archived';
-    }
+    this.getTagTitle();
     this.coverImage = this.getCoverImage();
   }
 
+  getTagTitle() {
+    if (this.product.borrowed) {
+      this.tagTitle = 'Borrowed';
+    } else if (this.product.available) {
+      this.tagTitle = this.manage ? 'Shared' : 'Available';
+    } else {
+      this.tagTitle = 'Not shared';
+    }
+  }
+
+  getSeverity() {
+    switch (this.tagTitle) {
+      case 'Shared':
+      case 'Available':
+        return 'success';
+      case 'Not shared':
+        return 'danger';
+      case 'Borrowed':
+        return 'warn';
+      default:
+        return 'info';
+    }
+  }
+
   getCoverImage() {
-    if(this.product && this.product.coverImage) {
+    if (this.product && this.product.coverImage) {
       return `data:image/jpg;base64,${this.product.coverImage}`;
     }
     return 'https://primefaces.org/cdn/primeng/images/card-ng.jpg';
@@ -77,10 +98,7 @@ export class ProductCardComponent implements OnInit{
   //   this.addToWaitingList.emit(this.product);
   // }
 
-
-
   // onShowDetails() {
   //   this.details.emit(this.product);
   // }
-  
 }

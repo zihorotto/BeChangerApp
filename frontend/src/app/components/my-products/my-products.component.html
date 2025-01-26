@@ -1,24 +1,37 @@
-<div class="lg:px-8 md:px-6 px-4 py-4 surface-ground ng-star-inserted">
-    <p-button (onClick)="navigateToAddNewProduct()" label="Add new product" icon="pi pi-plus" />
-    <div class="flex flex-row flex-wrap gap-3 mt-4">
-        @for (product of allProduct.content; track product.id) {
-            <app-product-card 
-                [product]="product"
-                [manage]="true"
-                (archive)="archiveProduct($event)"
-                (share)="shareProduct($event)"
-                (edit)="editProduct($event)"
-            ></app-product-card>
-        }
-    </div>
-    <div class="card flex justify-content-center pt-8">
-        <p-paginator 
-            (onPageChange)="onPageChange($event)" 
-            [first]="page" 
-            [rows]="size" 
-            [totalRecords]="120" 
-            [rowsPerPageOptions]="[10, 20, 30]" />
-    </div>
+<p-toast />
+<div class="flex flex-col h-full">
+  <p-button
+    (onClick)="navigateToAddNewProduct()"
+    label="Add new product"
+    icon="pi pi-plus"
+    class="py-4 pr-12 flex justify-end"
+  />
+  @if (!isLoaded) {
+  <div class="flex flex-wrap gap-3 px-[6vw] flex-row w-full justify-start">
+    @for (product of allProduct.content; track product.id) {
+    <app-product-card
+      [product]="product"
+      [manage]="true"
+      (archive)="archiveProduct($event)"
+      (share)="shareProduct($event)"
+      (edit)="editProduct($event)"
+    ></app-product-card>
+    }
+  </div>
+  } @else {
+  <p-progress-spinner
+    class="flex items-center justify-center h-96"
+    [style]="{ width: '100px', height: '100px' }"
+  />
+  }
+  <div class="p-4 shadow-md mt-auto flex justify-center">
+    <p-paginator
+      (onPageChange)="onPageChange($event)"
+      [first]="first"
+      [rows]="size"
+      [totalRecords]="numberOfProducts"
+      [rowsPerPageOptions]="[10, 20, 30]"
+      [showFirstLastIcon]="false"
+    />
+  </div>
 </div>
-
-

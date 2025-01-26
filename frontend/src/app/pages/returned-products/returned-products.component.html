@@ -1,51 +1,60 @@
 <p-toast />
-<div class="surface-ground px-4 py-8 md:px-6 lg:px-8">
-    <div class="card">
-        <p-table [value]="allProducts" [tableStyle]="{'min-width': '60rem'}">
-            <ng-template pTemplate="caption">
-                <div class="flex align-items-center justify-content-between">
-                    Products
-                </div>
-            </ng-template>
-            <ng-template pTemplate="header">
-                <tr>
-                    <th>Name</th>
-                  <th>Brand</th>
-                    <th>Id</th>
-                    <th>Rate</th>
-                    <th>Status</th>
-                    <th></th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-product>
-                <tr>
-                    <td>{{product.name}}</td>
-                    <td>{{product.brand}}</td>
-                    <td>{{product.id}}</td>
-                    <td><p-rating [(ngModel)]="product.rate" [readonly]="true"/></td>
-                    <td><p-tag *ngIf="product.returned" value="Return approved" severity="success" /></td>
-                    <td>
-                        <div class="card flex justify-content-center">
-                            <p-button 
-                                label="Approve"
-                                [outlined]="true"
-                                icon="pi pi-check"
-                                [disabled]="product.returnedApproved || !product.returned"
-                                (onClick)="approve(product)"
-                            />
-                        </div>
-                    </td>
-                </tr>
-                
-            </ng-template>
-        </p-table>
-    </div>
-    <div class="card flex justify-content-center pt-8">
-        <p-paginator 
-            (onPageChange)="onPageChange($event)" 
-            [first]="page" 
-            [rows]="size" 
-            [totalRecords]="120" 
-            [rowsPerPageOptions]="[10, 20, 30]" />
-    </div>
+<div class="flex flex-col h-full">
+  <div class="px-[6vw] pt-5 overflow-y-auto">
+    @if (!isLoaded) {
+    <p-table [value]="allProducts" [tableStyle]="{ 'min-width': '60rem' }">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Name</th>
+          <th>Brand</th>
+          <th>Id</th>
+          <th>Rate</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-product>
+        <tr>
+          <td>{{ product.name }}</td>
+          <td>{{ product.brand }}</td>
+          <td>{{ product.id }}</td>
+          <td><p-rating [(ngModel)]="product.rate" [readonly]="true" /></td>
+          <td>
+            <p-tag
+              *ngIf="product.returnedApproved"
+              value="Return approved"
+              severity="success"
+            />
+          </td>
+          <td>
+            <div class="card flex justify-content-center">
+              <p-button
+                label="Approve"
+                [outlined]="true"
+                icon="pi pi-check"
+                [disabled]="product.returnedApproved || !product.returned"
+                (onClick)="approve(product)"
+              />
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    } @else {
+    <p-progress-spinner
+      class="flex items-center justify-center h-96"
+      [style]="{ width: '100px', height: '100px' }"
+    />
+    }
+  </div>
+  <div class="p-4 shadow-md mt-auto flex justify-center">
+    <p-paginator
+      (onPageChange)="onPageChange($event)"
+      [first]="first"
+      [rows]="size"
+      [totalRecords]="numberOfProducts"
+      [rowsPerPageOptions]="[10, 20, 30]"
+      [showFirstLastIcon]="false"
+    />
+  </div>
 </div>

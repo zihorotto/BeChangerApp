@@ -12,6 +12,7 @@ import { ProductService } from '../../services/product/product.service';
 import { PageResponseBorrowedProductResponse } from '../../services/models/page-response-borrowed-product-response';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { ProgressSpinner } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-returned-products',
@@ -25,19 +26,22 @@ import { ToastModule } from 'primeng/toast';
     FormsModule,
     PaginatorModule,
     ToastModule,
+    ProgressSpinner,
   ],
   templateUrl: './returned-products.component.html',
   styleUrl: './returned-products.component.scss',
-  providers: [MessageService]
+  providers: [MessageService],
 })
 export class ReturnedProductsComponent implements OnInit {
   cover = 'https://primefaces.org/cdn/primeng/images/card-ng.jpg';
   page = 0;
+  first = 0;
   size = 10;
+  numberOfProducts = 0;
 
   allProducts: BorrowedProductResponse[] = [];
-
   item: BorrowedProductResponse = {};
+  isLoaded = true;
 
   private productService = inject(ProductService);
   private messageService = inject(MessageService);
@@ -47,12 +51,14 @@ export class ReturnedProductsComponent implements OnInit {
   }
 
   onPageChange(event: PaginatorState) {
-    this.page = event.first as number;
+    this.page = event.page as number;
+    this.first = event.first as number;
     this.size = event.rows as number;
     this.findAllReturnedProducts();
   }
 
   findAllReturnedProducts() {
+    this.isLoaded = true;
     this.productService
       .findAllReturnedProducts({
         page: this.page,
@@ -61,6 +67,8 @@ export class ReturnedProductsComponent implements OnInit {
       .subscribe({
         next: (response: PageResponseBorrowedProductResponse) => {
           this.allProducts = response.content || [];
+          this.numberOfProducts = response.totalElements as number;
+          this.isLoaded = false;
         },
       });
   }

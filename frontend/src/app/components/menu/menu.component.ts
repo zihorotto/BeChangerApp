@@ -38,7 +38,9 @@ export class MenuComponent {
     if (this.keycloakService.keycloak.tokenParsed?.sub) {
       let ws = new SockJS('http://localhost:8088/api/v1/ws');
       this.socketClient = Stomp.over(ws);
-      this.socketClient.connect({'Authorization': 'Bearer ' + this.keycloakService.keycloak.token}, () => {
+      this.socketClient.connect(
+        { Authorization: 'Bearer ' + this.keycloakService.keycloak.token },
+        () => {
           this.notificationSubscription = this.socketClient.subscribe(
             `/user/${this.keycloakService.keycloak.tokenParsed?.sub}/notifications`,
             (message: any) => {
@@ -47,26 +49,52 @@ export class MenuComponent {
               if (notification) {
                 switch (notification.status) {
                   case 'BORROWED':
-                    notificationMessage = { severity: 'success', summary: notification.bookTitle, detail: notification.message }
-                    this.messageService.add({ severity: 'success', summary: notification.bookTitle, detail: notification.message });
+                    notificationMessage = {
+                      severity: 'success',
+                      summary: notification.bookTitle,
+                      detail: notification.message,
+                    };
+                    this.messageService.add({
+                      severity: 'success',
+                      summary: notification.bookTitle,
+                      detail: notification.message,
+                    });
                     this.notifications.unshift(notificationMessage);
                     break;
                   case 'RETURNED':
-                    notificationMessage = { severity: 'info', summary: notification.bookTitle, detail: notification.message }
-                    this.messageService.add({ severity: 'info', summary: notification.bookTitle, detail: notification.message });
+                    notificationMessage = {
+                      severity: 'info',
+                      summary: notification.bookTitle,
+                      detail: notification.message,
+                    };
+                    this.messageService.add({
+                      severity: 'info',
+                      summary: notification.bookTitle,
+                      detail: notification.message,
+                    });
                     this.notifications.unshift(notificationMessage);
                     break;
                   case 'RETURN_APPROVED':
-                    notificationMessage = { severity: 'info', summary: notification.bookTitle, detail: notification.message }
-                    this.messageService.add({ severity: 'info', summary: notification.bookTitle, detail: notification.message });
+                    notificationMessage = {
+                      severity: 'info',
+                      summary: notification.bookTitle,
+                      detail: notification.message,
+                    };
+                    this.messageService.add({
+                      severity: 'info',
+                      summary: notification.bookTitle,
+                      detail: notification.message,
+                    });
                     this.notifications.unshift(notificationMessage);
                     break;
                 }
                 this.unreadNotificationsCount++;
               }
-            }, () => {
+            },
+            () => {
               console.error('Error while connecting to webSocket');
-            });
+            }
+          );
         }
       );
     }
