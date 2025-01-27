@@ -39,6 +39,14 @@
           [text]="true"
           severity="info"
         />
+        <p-button
+          *ngIf="product.borrowed !== true"
+          (onClick)="onDelete()"
+          icon="pi pi-trash"
+          [rounded]="true"
+          [text]="true"
+          severity="danger"
+        />
 
         } @else {
 

@@ -3,6 +3,7 @@ package com.bechanger.history;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -57,4 +58,12 @@ public interface ProductTransactionHistoryRepository extends JpaRepository<Produ
             AND transaction.returnApproved = false
             """)
     Optional<ProductTransactionHistory> findByProductIdAndOwnerId(@Param("productId") Integer productId, @Param("userId") String userId);
+
+    @Modifying
+    @Query("""
+        DELETE
+        FROM ProductTransactionHistory transaction
+        WHERE transaction.product.id = :productId
+        """)
+    void deleteByProductId(@Param("productId") Integer productId);
 }

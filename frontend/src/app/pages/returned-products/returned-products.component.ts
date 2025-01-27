@@ -93,4 +93,15 @@ export class ReturnedProductsComponent implements OnInit {
         },
       });
   }
+
+  getSeverity(product: BorrowedProductResponse) {
+    let status = product.returnedApproved ? 'RETURNEDAPPROVED' : 'RETURNED';
+    switch (status) {
+      case 'RETURNED':
+        return 'warn';
+      case 'RETURNEDAPPROVED':
+        return 'success';
+    }
+    return 'success';
+  }
 }

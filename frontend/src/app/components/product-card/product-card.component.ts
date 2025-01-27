@@ -30,7 +30,7 @@ export class ProductCardComponent implements OnInit {
     new EventEmitter<ProductResponse>();
   @Output() share: EventEmitter<ProductResponse> =
     new EventEmitter<ProductResponse>();
-  @Output() archive: EventEmitter<ProductResponse> =
+  @Output() delete: EventEmitter<ProductResponse> =
     new EventEmitter<ProductResponse>();
   @Output() edit: EventEmitter<ProductResponse> =
     new EventEmitter<ProductResponse>();
@@ -86,8 +86,8 @@ export class ProductCardComponent implements OnInit {
     this.share.emit(this.product);
   }
 
-  onArchive() {
-    this.archive.emit(this.product);
+  onDelete() {
+    this.delete.emit(this.product);
   }
 
   onEdit() {

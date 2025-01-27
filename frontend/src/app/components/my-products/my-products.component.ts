@@ -64,19 +64,17 @@ export class MyProductsComponent implements OnInit {
     this.findAllProductsByOwner();
   }
 
-  archiveProduct(product: ProductResponse) {
-    console.info('Archiving product: ' + product.name);
+  deleteProduct(product: ProductResponse) {
     this.productService
-      .updateArchivedStatus({
+      .deleteProduct({
         'product-id': product.id as number,
       })
       .subscribe({
         next: () => {
-          product.available = !product.available;
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
-            detail: `You successfully archived the ${product.name}`,
+            detail: `You successfully deleted the ${product.name}`,
           });
         },
       });

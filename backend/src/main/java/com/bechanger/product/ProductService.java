@@ -8,6 +8,7 @@ import com.bechanger.history.ProductTransactionHistoryRepository;
 import com.bechanger.notification.Notification;
 import com.bechanger.notification.NotificationService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -229,12 +230,14 @@ public class ProductService {
         productRepository.save(product);
     }
 
+    @Transactional
     public void deleteProduct(Integer productId, Authentication connectedUser) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new EntityNotFoundException("Product not found with ID: " + productId));
         if (!product.getCreatedBy().equals(connectedUser.getName())) {
             throw new OperationNotPermittedException("You do not have permission to delete this product");
         }
+        productTransactionHistoryRepository.deleteByProductId(productId);
         productRepository.delete(product);
     }
 }
