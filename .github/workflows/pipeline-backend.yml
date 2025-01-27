@@ -86,7 +86,7 @@ jobs:
         id: extract_version
         run: |
           cd backend
-          echo "VERSION=$(mvn -q -Dexec.executable='echo' -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT
+          $version = mvn -q -Dexec.executable="echo" -Dexec.args="${{ secrets.project.version }}" --non-recursive exec:exec echo "VERSION=$version" >> $GITHUB_ENV
 
       - name: Login to DockerHub
         uses: docker/login-action@v3
