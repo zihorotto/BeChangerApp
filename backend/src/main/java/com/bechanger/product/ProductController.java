@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -62,10 +63,10 @@ public class ProductController {
         return ResponseEntity.ok(service.updateAvailableStatus(productId, connectedUser));
     }
 
-    @PatchMapping("/archived/{product-id}")
-    public ResponseEntity<Integer> updateArchivedStatus(@PathVariable("product-id") Integer productId,
+    @PatchMapping("/borrowed/{product-id}")
+    public ResponseEntity<Integer> updateBorrowStatus(@PathVariable("product-id") Integer productId,
                                                        Authentication connectedUser) {
-        return ResponseEntity.ok(service.updateArchivedStatus(productId, connectedUser));
+        return ResponseEntity.ok(service.updateBorrowStatus(productId, connectedUser));
     }
 
 
@@ -95,6 +96,12 @@ public class ProductController {
                                                        Authentication connectedUser) {
         service.uploadProductCoverPicture(file, connectedUser, productId);
         return ResponseEntity.accepted().build();
+    }
+
+    @DeleteMapping("{product-id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable("product-id") Integer productId, Authentication connectedUser) {
+        service.deleteProduct(productId, connectedUser);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

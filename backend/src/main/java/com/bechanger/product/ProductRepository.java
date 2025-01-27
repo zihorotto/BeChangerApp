@@ -10,8 +10,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer>, JpaS
     @Query("""
             SELECT product
             FROM Product product
-            WHERE product.archived = false
-            AND product.available = true
+            WHERE product.available = true
             AND product.createdBy != :userId
             """)
     Page<Product> findAllDisplayableProducts(Pageable pageable, String userId);

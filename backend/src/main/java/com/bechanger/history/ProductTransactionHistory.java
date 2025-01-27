@@ -2,7 +2,6 @@ package com.bechanger.history;
 
 import com.bechanger.common.BaseEntity;
 import com.bechanger.product.Product;
-import com.bechanger.user.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -27,5 +26,6 @@ public class ProductTransactionHistory extends BaseEntity {
     @JoinColumn(name = "product_id")
     private Product product;
     private boolean returned;
+    private boolean borrowed;
     private boolean returnApproved;
 }

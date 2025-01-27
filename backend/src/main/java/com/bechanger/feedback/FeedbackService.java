@@ -27,8 +27,8 @@ public class FeedbackService {
     public Integer save(FeedbackRequest request, Authentication connectedUser) {
         Product product = productRepository.findById(request.productId())
                 .orElseThrow(() -> new EntityNotFoundException("No products found with the ID: " + request.productId()));
-        if (product.isArchived() || !product.isAvailable()) {
-            throw new OperationNotPermittedException("You can not give a feedback for an archived or not available product.");
+        if (product.isBorrowed() || !product.isAvailable()) {
+            throw new OperationNotPermittedException("You can not give a feedback for a borrowed or not available product.");
         }
         if (Objects.equals(product.getCreatedBy(), connectedUser.getName())) {
             throw new OperationNotPermittedException("You can not give a feedback to your own product");

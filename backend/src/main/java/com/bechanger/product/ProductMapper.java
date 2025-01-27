@@ -14,7 +14,7 @@ public class ProductMapper {
                 .brand(request.brand())
                 .description(request.description())
                 .identifier(request.identifier())
-                .archived(false)
+                .borrowed(false)
                 .available(request.available())
                 .build();
     }
@@ -27,7 +27,7 @@ public class ProductMapper {
                 .identifier(product.getIdentifier())
                 .description(product.getDescription())
                 .rate(product.getRate())
-                .archived(product.isArchived())
+                .borrowed(product.isBorrowed())
                 .available(product.isAvailable())
                 //.owner(product.getOwner().fullName())
                 .coverImage(FileUtils.readFileFromLocation(product.getCoverImage()))

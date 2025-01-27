@@ -32,6 +32,7 @@ public interface ProductTransactionHistoryRepository extends JpaRepository<Produ
             WHERE productTransactionHistory.userId =:userId
             AND productTransactionHistory.product.id =:productId
             AND productTransactionHistory.returnApproved = false
+            AND productTransactionHistory.borrowed = true
             """)
     boolean isAlreadyBorrowedByUser(@Param("productId") Integer productId, @Param("userId") String userId);
 

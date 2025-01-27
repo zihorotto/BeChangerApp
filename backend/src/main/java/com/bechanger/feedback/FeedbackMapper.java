@@ -15,7 +15,7 @@ public class FeedbackMapper {
                 .comment(request.comment())
                 .product(Product.builder()
                         .id(request.productId())
-                        .archived(false) // Not required and has no impact :: just to satisfy lombok
+                        .borrowed(false) // Not required and has no impact :: just to satisfy lombok
                         .available(false)  // Not required and has no impact :: just to satisfy lombok
                         .build()
                 )

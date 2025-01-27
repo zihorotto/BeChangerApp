@@ -3,7 +3,6 @@ package com.bechanger.product;
 import com.bechanger.common.BaseEntity;
 import com.bechanger.feedback.Feedback;
 import com.bechanger.history.ProductTransactionHistory;
-import com.bechanger.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,7 +26,7 @@ public class Product extends BaseEntity {
     private String identifier; //isbn
     private String description; // synopsis
     private String coverImage; // bookCover
-    private boolean archived;
+    private boolean borrowed; // archived
     private boolean available; // shareable
 
     @OneToMany(mappedBy = "product")

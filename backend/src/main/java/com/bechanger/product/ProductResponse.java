@@ -17,6 +17,6 @@ public class ProductResponse {
     private String owner;
     private byte[] coverImage;
     private double rate;
-    private boolean archived;
+    private boolean borrowed;
     private boolean available;
 }
