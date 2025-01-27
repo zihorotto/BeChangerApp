@@ -1,0 +1,66 @@
+name: BeChanger CD Pipeline
+
+on:
+  workflow_run:
+    workflows: ["CI Pipeline"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    name: Deploy Backend & Frontend
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Delete old backend docker container
+        run: sudo docker rm -f bechanger-backend-container || true
+
+      - name: Delete old frontend docker container
+        run: sudo docker rm -f bechanger-frontend-container || true
+
+      - name: Delete all docker images
+        run: sudo docker image prune -a -f
+
+      - name: Pull backend docker image
+        run: sudo docker pull zihorotto/bechanger-backend:latest
+
+      - name: Run backend docker container
+        run: |
+          sudo docker run -d -p 8088:8088 --name bechanger-backend-container \
+            -e SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }} \
+            -e SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }} \
+            -e SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }} \
+            -e SPRING_JPA_HIBERNATE_DDL_AUTO=${{ secrets.SPRING_JPA_HIBERNATE_DDL_AUTO }} \
+            -e SPRING_MAIL_HOST=${{ secrets.SPRING_MAIL_HOST }} \
+            -e SPRING_MAIL_USERNAME=${{ secrets.SPRING_MAIL_USERNAME }} \
+            -e SPRING_MAIL_PASSWORD=${{ secrets.SPRING_MAIL_PASSWORD }} \
+            zihorotto/bechanger-backend:latest
+
+      - name: Pull frontend docker image
+        run: sudo docker pull zihorotto/bechanger-frontend:latest
+
+      - name: Run frontend docker container
+        run: |
+          sudo docker run -d -p 80:80 --name bechanger-frontend-container \
+            -e SPRING_PROFILES_ACTIVE=${{ secrets.SPRING_PROFILES_ACTIVE }} \
+            -e SPRING_SERVLET_CONTEXT_PATH=${{ secrets.SPRING_SERVLET_CONTEXT_PATH }} \
+            zihorotto/bechanger-frontend:latest
+
+      - name: Set ENV variables for deployment
+        run: |
+          ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_VPS_IP }} <<EOF
+          export SPRING_MAIL_HOST=${{ secrets.SPRING_MAIL_HOST }}
+          export SPRING_MAIL_USERNAME=${{ secrets.SPRING_MAIL_USERNAME }}
+          export SPRING_MAIL_PASSWORD=${{ secrets.SPRING_MAIL_PASSWORD }}
+          export SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }}
+          export SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }}
+          export SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}
+          cd ci-cd
+          docker-compose -f docker-compose.yml pull -q
+          docker-compose -f docker-compose.yml up -d
+          EOF
