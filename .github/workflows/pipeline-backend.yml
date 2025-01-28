@@ -86,8 +86,9 @@ jobs:
         id: extract_version
         run: |
           cd backend
-          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          $VERSION = (mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          Write-Host "Extracted Version: $VERSION"
+          [System.IO.File]::AppendAllText($env:GITHUB_ENV, "VERSION=$VERSION`n")
       - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
