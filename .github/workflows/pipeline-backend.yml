@@ -82,13 +82,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Extract project version
-        id: extract_version
-        run: |
-          cd backend
-          $version = $(mvn exec:exec -Dexec.executable='cmd' -Dexec.args='/c echo ${project.version}' --non-recursive)
-          echo "VERSION=$version" >> $GITHUB_ENV
-        shell: powershell
       - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
@@ -102,10 +95,10 @@ jobs:
           file: docker/backend/Dockerfile
           push: true
           platforms: linux/amd64
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/bc-api:${{ steps.extract_version.outputs.VERSION }} ${{ secrets.DOCKERHUB_USERNAME }}/bc-api:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/bc-api:latest
           build-args: |
             PROFILE=dev
-            APP_VERSION=${{ steps.extract_version.outputs.VERSION }}
+            APP_VERSION=1.0.0
 
   deploy:
     name: Deploy Backend
