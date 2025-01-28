@@ -1,8 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { ProductService } from '../../services/product/product.service';
-import { PageResponseProductResponse } from '../../services/models/page-response-product-response';
-import { ProductResponse } from '../../services/models/product-response';
+import { PageResponseProductResponse } from '../../types/page-response-product-response';
+import { ProductResponse } from '../../types/product-response';
 import { ProductCardComponent } from '../../components/product-card/product-card.component';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';

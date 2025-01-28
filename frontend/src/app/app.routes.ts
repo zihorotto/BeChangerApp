@@ -4,7 +4,7 @@ import { authGuard } from './guard/auth.guard';
 import { ManageProductComponent } from './pages/manage-product/manage-product.component';
 import { BorrowedProductsComponent } from './pages/borrowed-products/borrowed-products.component';
 import { ReturnedProductsComponent } from './pages/returned-products/returned-products.component';
-import { MyProductsComponent } from './components/my-products/my-products.component';
+import { MyProductsComponent } from './pages/my-products/my-products.component';
 import { ProductListComponent } from './pages/product-list/product-list.component';
 
 export const routes: Routes = [

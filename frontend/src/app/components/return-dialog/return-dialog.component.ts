@@ -10,10 +10,10 @@ import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
 import { RatingModule } from 'primeng/rating';
-import { BorrowedProductResponse } from '../../services/models/borrowed-product-response';
+import { BorrowedProductResponse } from '../../types/borrowed-product-response';
 import { ProductService } from '../../services/product/product.service';
 import { FeedbackService } from '../../services/feedback/feedback.service';
-import { FeedbackRequest } from '../../services/models/feedback-request';
+import { FeedbackRequest } from '../../types/feedback-request';
 
 @Component({
   selector: 'app-return-dialog',
@@ -60,8 +60,7 @@ export class ReturnDialogComponent implements OnInit {
   private giveFeedback() {
     debugger;
     this.feedbackService.saveFeedback(this.feedbackRequest).subscribe({
-      next: () => {
-      },
+      next: () => {},
     });
   }
 }
