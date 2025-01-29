@@ -120,13 +120,13 @@ jobs:
           echo "  HostkeyAlgorithms +ssh-rsa" >> "$HOME\.ssh\config"
       - name: Create deployment folder
         run: |
-          ssh -o KexAlgorithms=-sntrup761x25519-sha512@openssh.com,diffie-hellman-group14-sha1,diffie-hellman-group1-sha1,diffie-hellman-group-exchange-sha1,diffie-hellman-group-exchange-sha256 -o HostkeyAlgorithms=+ssh-rsa ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_VPS_IP }} "mkdir -p ci-cd"
+          ssh -F $HOME\.ssh\config ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_VPS_IP }} "mkdir -p ci-cd"
       - name: Copy docker-compose file
         run: |
-          scp -o KexAlgorithms=-sntrup761x25519-sha512@openssh.com,diffie-hellman-group14-sha1,diffie-hellman-group1-sha1,diffie-hellman-group-exchange-sha1,diffie-hellman-group-exchange-sha256 -o HostkeyAlgorithms=+ssh-rsa docker-compose.yml ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_VPS_IP }}:ci-cd/docker-compose.yml
+          scp -F $HOME\.ssh\config docker-compose.yml ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_VPS_IP }}:ci-cd/docker-compose.yml
       - name: Set ENV variable and deploy
         run: |
-          ssh -o KexAlgorithms=-sntrup761x25519-sha512@openssh.com,diffie-hellman-group14-sha1,diffie-hellman-group1-sha1,diffie-hellman-group-exchange-sha1,diffie-hellman-group-exchange-sha256 -o HostkeyAlgorithms=+ssh-rsa ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_VPS_IP }} <<EOF
+          ssh -F $HOME\.ssh\config ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_VPS_IP }} <<EOF
           export SPRING_MAIL_HOST=${{ secrets.SPRING_MAIL_HOST }}
           export SPRING_MAIL_USERNAME=${{ secrets.SPRING_MAIL_USERNAME }}
           export SPRING_MAIL_PASSWORD=${{ secrets.SPRING_MAIL_PASSWORD }}
