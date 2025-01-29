@@ -120,13 +120,13 @@ jobs:
           echo "  HostkeyAlgorithms +ssh-rsa" >> "$HOME\.ssh\config"
       - name: Create deployment folder
         run: |
-          ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_VPS_IP }} "mkdir -p ci-cd"
+          ssh -o KexAlgorithms=+diffie-hellman-group14-sha1 -o HostkeyAlgorithms=+ssh-rsa ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_VPS_IP }} "mkdir -p ci-cd"
       - name: Copy docker-compose file
         run: |
-          scp docker-compose.yml ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_VPS_IP }}:ci-cd/docker-compose.yml
+          scp -o KexAlgorithms=+diffie-hellman-group14-sha1 -o HostkeyAlgorithms=+ssh-rsa docker-compose.yml ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_VPS_IP }}:ci-cd/docker-compose.yml
       - name: Set ENV variable and deploy
         run: |
-          ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_VPS_IP }} <<EOF
+          ssh -o KexAlgorithms=+diffie-hellman-group14-sha1 -o HostkeyAlgorithms=+ssh-rsa ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_VPS_IP }} <<EOF
           export SPRING_MAIL_HOST=${{ secrets.SPRING_MAIL_HOST }}
           export SPRING_MAIL_USERNAME=${{ secrets.SPRING_MAIL_USERNAME }}
           export SPRING_MAIL_PASSWORD=${{ secrets.SPRING_MAIL_PASSWORD }}
@@ -134,5 +134,6 @@ jobs:
           docker-compose -f docker-compose.yml pull -q
           docker-compose -f docker-compose.yml up -d
           EOF
+  
   
   
