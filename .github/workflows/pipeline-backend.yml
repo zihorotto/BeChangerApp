@@ -108,33 +108,21 @@ jobs:
       - name: Setup SSH key
         shell: powershell
         run: |
-          # Ellenőrizd, hogy létezik-e az SSH mappa, ha nem, hozd létre
           if (-Not (Test-Path "$HOME\.ssh")) {
             New-Item -ItemType Directory -Path "$HOME\.ssh"
           }
-
-          # SSH kulcs írása a megfelelő helyre
           Set-Content -Path "$HOME\.ssh\id_rsa" -Value "${{ secrets.VPS_SSH_KEY }}"
-
-          # Jogosultságok beállítása (ha szükséges)
           icacls "$HOME\.ssh\id_rsa" /inheritance:r
           icacls "$HOME\.ssh\id_rsa" /grant:r "$($env:UserName):(R,W)"
-
-          # SSH kulcs ellenőrzése (hozzáadás a known_hosts fájlhoz)
           ssh-keyscan -H ${{ secrets.VPS_VPS_IP }} >> "$HOME\.ssh\known_hosts"
-
-          # SSH konfigurációs fájl beállítása
           echo "Host ${{ secrets.VPS_VPS_IP }}" >> "$HOME\.ssh\config"
           echo "  KexAlgorithms +diffie-hellman-group14-sha1" >> "$HOME\.ssh\config"
-
       - name: Create deployment folder
         run: |
           ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_VPS_IP }} "mkdir -p ci-cd"
-
       - name: Copy docker-compose file
         run: |
           scp docker-compose.yml ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_VPS_IP }}:ci-cd/docker-compose.yml
-
       - name: Set ENV variable and deploy
         run: |
           ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_VPS_IP }} <<EOF
@@ -145,3 +133,4 @@ jobs:
           docker-compose -f docker-compose.yml pull -q
           docker-compose -f docker-compose.yml up -d
           EOF
+  
