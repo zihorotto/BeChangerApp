@@ -108,11 +108,13 @@ jobs:
       - name: Setup SSH key
         shell: powershell
         run: |
-          mkdir -p $HOME\.ssh
-          Set-Content -Path $HOME\.ssh\id_rsa -Value "${{ secrets.VPS_SSH_KEY }}"
-          icacls $HOME\.ssh\id_rsa /inheritance:r
-          icacls $HOME\.ssh\id_rsa /grant:r "$($env:UserName):(R)"
-          ssh-keyscan -H ${{ secrets.VPS_VPS_IP }} >> $HOME\.ssh\known_hosts
+          if (-Not (Test-Path "$HOME\.ssh")) {
+            New-Item -ItemType Directory -Path "$HOME\.ssh"
+          }
+          Set-Content -Path "$HOME\.ssh\id_rsa" -Value "${{ secrets.VPS_SSH_KEY }}"
+          icacls "$HOME\.ssh\id_rsa" /inheritance:r
+          icacls "$HOME\.ssh\id_rsa" /grant:r "$($env:UserName):(R)"
+          ssh-keyscan -H ${{ secrets.VPS_VPS_IP }} >> "$HOME\.ssh\known_hosts"
 
       - name: Create deployment folder
         run: |
