@@ -106,11 +106,13 @@ jobs:
     needs: [build-image]
     steps:
       - name: Setup SSH key
+        shell: pwsh
         run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.VPS_VPS_IP }} >> ~/.ssh/known_hosts
+          mkdir -p $HOME\.ssh
+          Set-Content -Path $HOME\.ssh\id_rsa -Value "${{ secrets.VPS_SSH_KEY }}"
+          icacls $HOME\.ssh\id_rsa /inheritance:r
+          icacls $HOME\.ssh\id_rsa /grant:r "$($env:UserName):(R)"
+          ssh-keyscan -H ${{ secrets.VPS_VPS_IP }} >> $HOME\.ssh\known_hosts
 
       - name: Create deployment folder
         run: |
