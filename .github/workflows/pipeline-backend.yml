@@ -100,42 +100,6 @@ jobs:
             PROFILE=dev
             APP_VERSION=1.0.0
 
-  deploy:
-    name: Deploy Backend
-    runs-on: self-hosted
-    needs: [ build-image ]
-    steps:
-      - name: Setup SSH key
-        shell: powershell
-        run: |
-          if (-Not (Test-Path "$HOME\.ssh")) {
-            New-Item -ItemType Directory -Path "$HOME\.ssh"
-          }
-          Set-Content -Path "$HOME\.ssh\id_rsa" -Value "${{ secrets.VPS_SSH_KEY }}"
-          icacls "$HOME\.ssh\id_rsa" /inheritance:r
-          icacls "$HOME\.ssh\id_rsa" /grant:r "$($env:UserName):(R,W)"
-          ssh-keyscan -H ${{ secrets.VPS_VPS_IP }} >> "$HOME\.ssh\known_hosts"
-          echo "Host ${{ secrets.VPS_VPS_IP }}" >> "$HOME\.ssh\config"
-          echo "  KexAlgorithms +diffie-hellman-group14-sha1" >> "$HOME\.ssh\config"
-          echo "  HostkeyAlgorithms +ssh-rsa" >> "$HOME\.ssh\config"
-      - name: Create deployment folder
-        run: |
-          ssh -o KexAlgorithms="diffie-hellman-group14-sha1,diffie-hellman-group1-sha1,diffie-hellman-group-exchange-sha256" -o HostkeyAlgorithms="ssh-rsa" ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_VPS_IP }} "mkdir -p ci-cd"
-      - name: Copy docker-compose file
-        run: |
-          scp -o KexAlgorithms="diffie-hellman-group14-sha1,diffie-hellman-group1-sha1,diffie-hellman-group-exchange-sha256" -o HostkeyAlgorithms="ssh-rsa" docker-compose.yml ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_VPS_IP }}:ci-cd/docker-compose.yml
-      - name: Set ENV variable and deploy
-        run: |
-          ssh -o KexAlgorithms="diffie-hellman-group14-sha1,diffie-hellman-group1-sha1,diffie-hellman-group-exchange-sha256" -o HostkeyAlgorithms="ssh-rsa" ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_VPS_IP }} <<EOF
-          export SPRING_MAIL_HOST=${{ secrets.SPRING_MAIL_HOST }}
-          export SPRING_MAIL_USERNAME=${{ secrets.SPRING_MAIL_USERNAME }}
-          export SPRING_MAIL_PASSWORD=${{ secrets.SPRING_MAIL_PASSWORD }}
-          cd ci-cd
-          docker-compose -f docker-compose.yml pull -q
-          docker-compose -f docker-compose.yml up -d
-          EOF
-   
-  
   
   
   
