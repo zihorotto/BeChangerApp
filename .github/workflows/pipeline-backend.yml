@@ -106,7 +106,7 @@ jobs:
     needs: [build-image]
     steps:
       - name: Setup SSH key
-        shell: pwsh
+        shell: powershell
         run: |
           mkdir -p $HOME\.ssh
           Set-Content -Path $HOME\.ssh\id_rsa -Value "${{ secrets.VPS_SSH_KEY }}"
