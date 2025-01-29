@@ -117,6 +117,7 @@ jobs:
           ssh-keyscan -H ${{ secrets.VPS_VPS_IP }} >> "$HOME\.ssh\known_hosts"
           echo "Host ${{ secrets.VPS_VPS_IP }}" >> "$HOME\.ssh\config"
           echo "  KexAlgorithms +diffie-hellman-group14-sha1" >> "$HOME\.ssh\config"
+          echo "  HostkeyAlgorithms +ssh-rsa" >> "$HOME\.ssh\config"
       - name: Create deployment folder
         run: |
           ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_VPS_IP }} "mkdir -p ci-cd"
@@ -133,4 +134,5 @@ jobs:
           docker-compose -f docker-compose.yml pull -q
           docker-compose -f docker-compose.yml up -d
           EOF
+  
   
