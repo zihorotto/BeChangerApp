@@ -100,7 +100,7 @@ jobs:
             PROFILE=dev
             APP_VERSION=1.0.0
 
-  ddeploy:
+  deploy:
     name: Deploy Backend
     runs-on: self-hosted
     needs: [ build-image ]
