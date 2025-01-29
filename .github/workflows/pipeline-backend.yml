@@ -114,7 +114,11 @@ jobs:
           Set-Content -Path "$HOME\.ssh\id_rsa" -Value "${{ secrets.VPS_SSH_KEY }}"
           icacls "$HOME\.ssh\id_rsa" /inheritance:r
           icacls "$HOME\.ssh\id_rsa" /grant:r "$($env:UserName):(R)"
+          
           ssh-keyscan -H ${{ secrets.VPS_VPS_IP }} >> "$HOME\.ssh\known_hosts"
+
+          echo "Host ${{ secrets.VPS_VPS_IP }}" >> "$HOME\.ssh\config"
+          echo "  KexAlgorithms +diffie-hellman-group14-sha1" >> "$HOME\.ssh\config"
 
       - name: Create deployment folder
         run: |
