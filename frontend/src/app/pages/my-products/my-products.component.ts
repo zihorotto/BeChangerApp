@@ -1,4 +1,10 @@
-import { Component, inject, OnInit } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnInit,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { ButtonModule } from 'primeng/button';
 import { Router } from '@angular/router';
@@ -31,17 +37,17 @@ export class MyProductsComponent implements OnInit {
   numberOfProducts = 0;
   isLoaded = true;
 
-  allProduct: PageResponseProductResponse = {};
   private productService = inject(ProductService);
   private messageService = inject(MessageService);
   router = inject(Router);
+  allProduct: WritableSignal<PageResponseProductResponse> =
+    signal<PageResponseProductResponse>({});
 
   ngOnInit(): void {
     this.findAllProductsByOwner();
   }
 
   findAllProductsByOwner() {
-    this.isLoaded = true;
     this.productService
       .findAllProductsByOwner({
         page: this.page,
@@ -49,7 +55,7 @@ export class MyProductsComponent implements OnInit {
       })
       .subscribe({
         next: (response: PageResponseProductResponse) => {
-          this.allProduct = response;
+          this.allProduct.set(response);
           this.numberOfProducts = response.totalElements as number;
           this.isLoaded = false;
         },
@@ -57,7 +63,6 @@ export class MyProductsComponent implements OnInit {
   }
 
   onPageChange(event: PaginatorState) {
-    debugger;
     this.page = event.page as number;
     this.first = event.first as number;
     this.size = event.rows as number;
@@ -76,24 +81,24 @@ export class MyProductsComponent implements OnInit {
             summary: 'Success',
             detail: `You successfully deleted the ${product.name}`,
           });
+          this.findAllProductsByOwner();
         },
       });
   }
 
   shareProduct(product: ProductResponse) {
-    console.info('Sharing product: ' + product.name);
     this.productService
       .updateAvailableStatus({
         'product-id': product.id as number,
       })
       .subscribe({
         next: () => {
-          product.available = !product.available;
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
             detail: `You successfully shared the ${product.name}`,
           });
+          this.findAllProductsByOwner();
         },
       });
   }

@@ -43,7 +43,6 @@ export class ProductCardComponent implements OnInit {
   coverImage: string | undefined;
 
   ngOnInit(): void {
-    this.getTagTitle();
     this.coverImage = this.getCoverImage();
   }
 
@@ -55,6 +54,7 @@ export class ProductCardComponent implements OnInit {
     } else {
       this.tagTitle = 'Not shared';
     }
+    return this.tagTitle;
   }
 
   getSeverity() {

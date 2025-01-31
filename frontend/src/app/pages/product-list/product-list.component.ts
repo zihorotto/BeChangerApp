@@ -1,4 +1,10 @@
-import { Component, inject, OnInit } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnInit,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { ProductService } from '../../services/product/product.service';
 import { PageResponseProductResponse } from '../../types/page-response-product-response';
@@ -28,7 +34,8 @@ export class ProductListComponent implements OnInit {
   numberOfProducts = 0;
   isLoaded = true;
 
-  allProduct: PageResponseProductResponse = {};
+  allProduct: WritableSignal<PageResponseProductResponse> =
+    signal<PageResponseProductResponse>({});
   private productService = inject(ProductService);
   private messageService = inject(MessageService);
 
@@ -45,7 +52,7 @@ export class ProductListComponent implements OnInit {
       })
       .subscribe({
         next: (response: PageResponseProductResponse) => {
-          this.allProduct = response;
+          this.allProduct.set(response);
           this.numberOfProducts = response.totalElements as number;
           this.isLoaded = false;
         },
@@ -71,6 +78,7 @@ export class ProductListComponent implements OnInit {
             summary: 'Success',
             detail: `You successfully brrowed ${product.name}`,
           });
+          this.findAllProduct();
         },
         error: (err) => {
           this.messageService.add({
