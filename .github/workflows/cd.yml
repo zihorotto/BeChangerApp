@@ -9,7 +9,7 @@ on:
 jobs:
   deploy:
     runs-on: self-hosted
-    name: Deploy backend, frontend, Keycloak, and PostgreSQL
+    name: Deploy Backend, frontend, Keycloak, and PostgreSQL
     steps:
       - name: Remove old backend container
         run: |
