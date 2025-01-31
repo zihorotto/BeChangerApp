@@ -2,16 +2,92 @@ name: CI Pipeline
 
 on:
   push:
-    branches: [ "develop-deploy" ]
+    branches:
+      - develop-deploy
+    paths:
+      - backend/**
+      - frontend/**
+      - keycloak/**
+      - docker/backend/**
+      - docker/frontend/**
+      - docker/keycloak/**
+      - docker/postgresql/**
+      - 'docker-compose.yml'
+      - .github/workflows/*-backend.yml
+      - .github/workflows/*-frontend.yml
+      - .github/workflows/*-keycloak.yml
+      - .github/workflows/*-postgresql.yml
 
 jobs:
-
-  build:
-
-    runs-on: ubuntu-latest
-
+  compile-backend:
+    runs-on: self-hosted
+    name: Compile backend
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: 'corretto'
+
+      - name: Compile backend
+        run: |
+          cd backend
+          mvn clean compile
+
+  compile-frontend:
+    runs-on: self-hosted
+    name: Compile frontend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install dependencies
+        run: |
+          cd frontend
+          npm install
+
+      - name: Build frontend
+        run: |
+          cd frontend
+          npm run build
+
+  unit-tests:
+    runs-on: self-hosted
+    name: Unit tests
+    needs: [compile-backend]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: 'corretto'
+
+      - name: Running backend unit Tests
+        run: |
+          cd backend
+          mvn clean test
+
+  build-image:
+    name: Build and Push Docker images
+    runs-on: self-hosted
+    needs: [unit-tests, compile-frontend]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Login to DockerHub
         uses: docker/login-action@v3
@@ -19,23 +95,41 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Build & Push backend image
+        uses: docker/build-push-action@v5
+        with:
+          context: backend
+          file: docker/backend/Dockerfile
+          push: true
+          platforms: linux/amd64
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/bc-api:latest
+          build-args: |
+            PROFILE=dev
+            APP_VERSION=1.0.0
 
-      - name: Build the Backend Docker Image
-        run: docker build -t zihorotto/bc-api backend/
-      - name: Backend image push to Dockerhub
-        run: docker push zihorotto/bc-api:latest
+      - name: Build & Push frontend image
+        uses: docker/build-push-action@v5
+        with:
+          context: frontend
+          file: docker/frontend/Dockerfile
+          push: true
+          platforms: linux/amd64
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/bc-frontend:latest
 
-      - name: Build the postgres sql Image
-        run: docker build -t zihorotto/postgres-sql-bc backend/
-      - name: Backend image push to Dockerhub
-        run: docker push zihorotto/postgres-sql-bc:latest
+      - name: Build & Push Keycloak image
+        uses: docker/build-push-action@v5
+        with:
+          context: keycloak
+          file: docker/keycloak/Dockerfile
+          push: true
+          platforms: linux/amd64
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/keycloak-bc:latest
 
-      - name: Build the keycloak Docker Image
-        run: docker build -t zihorotto/keycloak-bc backend/
-      - name: Backend image push to Dockerhub
-        run: docker push zihorotto/keycloak-api:latest
-
-      - name: Build the Frontend Docker Image
-        run: docker build -t zihorotto/bc-frontend frontend/
-      - name: Backend image push to Dockerhub
-        run: docker push zihorotto/bc-frontend:latest
+      - name: Build & Push PostgreSQL image
+        uses: docker/build-push-action@v5
+        with:
+          context: docker/postgresql
+          file: docker/postgresql/Dockerfile
+          push: true
+          platforms: linux/amd64
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/bpostgres-sql-bc:latest

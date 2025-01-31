@@ -7,37 +7,58 @@ on:
       - completed
 
 jobs:
-
-  build:
-
+  deploy:
     runs-on: self-hosted
-
+    name: Deploy backend, frontend, Keycloak, and PostgreSQL
     steps:
-      - name: Delete old backend docker containers
-        run: sudo docker rm -f bc-api || true
-      - name: Delete old keycloak docker containers
-        run: sudo docker rm -f keycloak-bc || true
-      - name: Delete old frontend docker container
-        run: sudo docker rm -f bc-frontend || true
-      - name: Delete all docker image
-        run: sudo docker image prune -a -f
+      - name: Remove old backend container
+        run: |
+          sudo docker rm -f bc-api || true
 
-      - name: Pull backend docker image
-        run: sudo docker pull zihorotto/bc-api:latest
-      - name: Run backend docker container
-        run: sudo docker run -d -p 8088:8088 --name bc-api zihorotto/bc-api
+      - name: Remove old frontend container
+        run: |
+          sudo docker rm -f bc-frontend || true
 
-      - name: Pull postgres sql image
-        run: sudo docker pull zihorotto/postgres-sql-bc:latest
-      - name: Run backend docker container
-        run: sudo docker run -d -p 5432:5432 --name bc-api zihorotto/postgres-sql-bc
+      - name: Remove old Keycloak container
+        run: |
+          sudo docker rm -f keycloak-bc || true
 
-      - name: Pull keycloak docker image
-        run: sudo docker pull zihorotto/keycloak-bc:latest
-      - name: Run backend docker container
-        run: sudo docker run -d -p 9090:8080 --name keycloak-bc zihorotto/keycloak-bc
+      - name: Remove old PostgreSQL container
+        run: |
+          sudo docker rm -f postgres-sql-bc || true
 
-      - name: Pull frontend docker image
-        run: sudo docker pull zihorotto/blog-project-frontend:latest
-      - name: Run frontend docker container
-        run: sudo docker run -d -p 4200:80 --name blog-project-frontend-container zihorotto/blog-project-frontend
+      - name: Remove old images
+        run: |
+          sudo docker image prune -a -f
+
+      - name: Pull latest backend image
+        run: |
+          sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/bc-api:latest
+
+      - name: Pull latest frontend image
+        run: |
+          sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/bc-frontend:latest
+
+      - name: Pull latest Keycloak image
+        run: |
+          sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/keycloak-bc:latest
+
+      - name: Pull latest PostgreSQL image
+        run: |
+          sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/postgresql-sql-bc:latest
+
+      - name: Run backend container
+        run: |
+          sudo docker run -d -p 8080:8088 --name bc-api ${{ secrets.DOCKERHUB_USERNAME }}/bc-api:latest
+
+      - name: Run frontend container
+        run: |
+          sudo docker run -d -p 4200:80 --name bc-frontend ${{ secrets.DOCKERHUB_USERNAME }}/bc-frontend:latest
+
+      - name: Run Keycloak container
+        run: |
+          sudo docker run -d -p 9090:8080 --name keycloak-bc ${{ secrets.DOCKERHUB_USERNAME }}/keycloak-bc:latest
+
+      - name: Run PostgreSQL container
+        run: |
+          sudo docker run -d -p 5432:5432 --name postgres-sql-bc ${{ secrets.DOCKERHUB_USERNAME }}/postgres-sql-bc:latest
