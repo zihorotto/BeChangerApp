@@ -1,0 +1,40 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ "develop-deploy" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: login Dockerhub
+
+        env:
+          DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
+          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+        run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+
+      - name: Build the Backend Docker Image
+        run: docker build -t zihorotto/bc-api backend/
+      - name: Backend image push to Dockerhub
+        run: docker push zihorotto/bc-api:latest
+
+      - name: Build the postgres sql Image
+        run: docker build -t zihorotto/postgres-sql-bc backend/
+      - name: Backend image push to Dockerhub
+        run: docker push zihorotto/postgres-sql-bc:latest
+
+      - name: Build the keycloak Docker Image
+        run: docker build -t zihorotto/keycloak-bc backend/
+      - name: Backend image push to Dockerhub
+        run: docker push zihorotto/keycloak-api:latest
+
+      - name: Build the Frontend Docker Image
+        run: docker build -t zihorotto/bc-frontend frontend/
+      - name: Backend image push to Dockerhub
+        run: docker push zihorotto/bc-frontend:latest
