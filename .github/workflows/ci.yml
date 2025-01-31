@@ -53,6 +53,11 @@ jobs:
           cd frontend
           npm install
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
       - name: Build frontend
         run: |
           cd frontend
