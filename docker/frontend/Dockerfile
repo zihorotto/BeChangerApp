@@ -8,7 +8,7 @@ RUN npm install
 
 COPY . .
 
-RUN npm run build --prod
+RUN ng build --prod --aot --optimization
 
 FROM nginx:alpine
 
