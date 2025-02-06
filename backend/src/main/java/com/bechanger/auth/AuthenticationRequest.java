@@ -13,6 +13,7 @@ import lombok.Setter;
 @Builder
 public class AuthenticationRequest {
 
+
     @NotEmpty(message = "Email is mandatory")
     @NotBlank(message = "Email is mandatory")
     @Email(message = "Email is not formatted")

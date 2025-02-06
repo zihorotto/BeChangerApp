@@ -31,7 +31,7 @@ jobs:
       - name: Setup JDK
         uses: actions/setup-java@v4
         with:
-          java-version: 17
+          java-version: 22
           distribution: 'corretto'
 
       - name: Compile backend
@@ -96,7 +96,7 @@ jobs:
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/bc-api:latest
           build-args: |
             PROFILE=dev
-            APP_VERSION=1.0.0
+            APP_VERSION=1.1.0
 
       - name: Build & Push frontend image
         uses: docker/build-push-action@v5
@@ -123,4 +123,4 @@ jobs:
           file: docker/postgresql/Dockerfile
           push: true
           platforms: linux/amd64
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/bpostgres-sql-bc:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/postgres-sql-bc:latest
