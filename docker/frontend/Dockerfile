@@ -8,6 +8,8 @@ RUN npm install
 
 COPY . .
 
+RUN npm run build --prod
+
 FROM nginx:alpine
 
 COPY nginx.conf /etc/nginx/nginx.conf
