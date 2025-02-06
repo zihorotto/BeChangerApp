@@ -1,5 +1,5 @@
 # Build stage
-FROM maven:3.8.7-openjdk-18 AS build
+FROM maven:3.9.6-openjdk-18 AS build
 WORKDIR /build
 COPY pom.xml .
 RUN mvn dependency:go-offline
@@ -7,7 +7,7 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 #Runtime stagemvn -v
-FROM amazoncorretto:17
+FROM amazoncorretto:18
 ARG PROFILE=dev
 ARG APP_VERSION=1.1.0
 
