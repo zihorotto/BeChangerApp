@@ -12,6 +12,6 @@ FROM nginx:alpine
 
 COPY nginx.conf /etc/nginx/nginx.conf
 
-COPY --from=build-stage /beChangerApp/frontend/dist/game-network-ui /usr/share/nginx/html/
+COPY --from=build-stage /beChangerApp/frontend/dist/game-network-ui/browser /usr/share/nginx/html/
 
 EXPOSE 80
