@@ -1,4 +1,4 @@
-app = "your-app-name"
+app = "bechangerapp"
 
 [build]
   dockerfile = "Dockerfile"  # Az egyetlen Dockerfile
