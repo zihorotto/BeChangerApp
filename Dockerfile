@@ -56,8 +56,12 @@
     # Keycloak fájl másolása (ha szükséges)
     COPY --from=keycloak /opt/keycloak /opt/keycloak
     
+    # Telepítjük az Nginx-et
+    RUN apt-get update && apt-get install -y nginx
+    
     # Exponáljuk a backend portot
     EXPOSE 8088
+    EXPOSE 80
     
     # Keycloak, Frontend és Backend környezeti változók
     ENV ACTIVE_PROFILE=dev
