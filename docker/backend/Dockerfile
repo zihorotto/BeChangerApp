@@ -16,10 +16,4 @@ COPY --from=build /build/target/be-changer-*.jar /app/
 
 EXPOSE 8088
 
-ENV ACTIVE_PROFILE=${PROFILE}
-ENV JAR_VERSION=${APP_VERSION}
-ENV SPRING_MAIL_HOST=${SPRING_MAIL_HOST}
-ENV SPRING_MAIL_USERNAME=missing_user_name
-ENV SPRING_MAIL_PASSWORD=missing_password
-
 CMD java -jar -Dspring.profiles.active=${ACTIVE_PROFILE} be-changer-${JAR_VERSION}.jar

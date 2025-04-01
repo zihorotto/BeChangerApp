@@ -13,7 +13,7 @@
     RUN mvn clean package -DskipTests
     
     # --- Keycloak Stage ---
-    FROM jboss/keycloak:15.0.2 AS keycloak
+    FROM quay.io/keycloak/keycloak:latest AS keycloak
     
     # Konfiguráljuk a Keycloak környezetet
     ENV KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN}
