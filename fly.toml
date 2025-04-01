@@ -1,0 +1,14 @@
+app = "your-app-name"
+
+[build]
+  dockerfile = "Dockerfile"  # Az egyetlen Dockerfile
+
+[[services]]
+  internal_port = 8088  # Backend portja
+  public_port = 80      # Frontend portja
+  allow_tls = true
+
+[[services]]
+  internal_port = 8082  # Keycloak portja
+  public_port = 8082    # Keycloak nyilvános portja
+  allow_tls = true
