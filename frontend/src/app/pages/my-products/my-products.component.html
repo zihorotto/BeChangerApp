@@ -8,7 +8,7 @@
   />
   @if (!isLoaded) {
   <div class="flex flex-wrap gap-3 px-[6vw] flex-row w-full justify-start">
-    @for (product of allProduct.content; track product.id) {
+    @for (product of allProduct().content; track product.id) {
     <app-product-card
       [product]="product"
       [manage]="true"

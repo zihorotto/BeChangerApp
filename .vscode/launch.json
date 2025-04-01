@@ -1,0 +1,13 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "BeChangerApplication",
+            "request": "launch",
+            "mainClass": "com.bechanger.BeChangerApplication",
+            "projectName": "be-changer",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

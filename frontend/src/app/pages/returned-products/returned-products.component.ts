@@ -7,9 +7,9 @@ import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { ReturnDialogComponent } from '../../components/return-dialog/return-dialog.component';
-import { BorrowedProductResponse } from '../../services/models/borrowed-product-response';
+import { BorrowedProductResponse } from '../../types/borrowed-product-response';
 import { ProductService } from '../../services/product/product.service';
-import { PageResponseBorrowedProductResponse } from '../../services/models/page-response-borrowed-product-response';
+import { PageResponseBorrowedProductResponse } from '../../types/page-response-borrowed-product-response';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ProgressSpinner } from 'primeng/progressspinner';
@@ -38,6 +38,7 @@ export class ReturnedProductsComponent implements OnInit {
   first = 0;
   size = 10;
   numberOfProducts = 0;
+  tagTitle = '';
 
   allProducts: BorrowedProductResponse[] = [];
   item: BorrowedProductResponse = {};
@@ -94,14 +95,27 @@ export class ReturnedProductsComponent implements OnInit {
       });
   }
 
-  getSeverity(product: BorrowedProductResponse) {
-    let status = product.returnedApproved ? 'RETURNEDAPPROVED' : 'RETURNED';
-    switch (status) {
-      case 'RETURNED':
-        return 'warn';
-      case 'RETURNEDAPPROVED':
-        return 'success';
+  getTagTitle(product: BorrowedProductResponse) {
+    if (!product.returned) {
+      this.tagTitle = 'Borrowed';
+    } else if (product.returned && !product.returnedApproved) {
+      this.tagTitle = 'Not yet approved';
+    } else {
+      this.tagTitle = 'Return approved';
     }
-    return 'success';
+    return this.tagTitle;
+  }
+
+  getSeverity() {
+    switch (this.tagTitle) {
+      case 'Return approved':
+        return 'success';
+      case 'Not yet approved':
+        return 'danger';
+      case 'Borrowed':
+        return 'warn';
+      default:
+        return 'info';
+    }
   }
 }

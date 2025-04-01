@@ -4,8 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DividerModule } from 'primeng/divider';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ProductService } from '../../services/product/product.service';
-import { ProductResponse } from '../../services/models/product-response';
-import { ProductRequest } from '../../services/models/product-request';
+import { ProductResponse } from '../../types/product-response';
+import { ProductRequest } from '../../types/product-request';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { ToggleSwitch } from 'primeng/toggleswitch';
@@ -62,7 +62,6 @@ export class ManageProductComponent implements OnInit {
         })
         .subscribe({
           next: (product: ProductResponse) => {
-            debugger;
             this.productRequest = {
               id: product.id,
               name: product.name as string,

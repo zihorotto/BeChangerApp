@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { ApiConfiguration } from '../api-configuration';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { PageResponseProductResponse } from '../models/page-response-product-response';
-import { ProductRequest } from '../models/product-request';
-import { ProductResponse } from '../models/product-response';
-import { PageResponseBorrowedProductResponse } from '../models/page-response-borrowed-product-response';
+import { PageResponseProductResponse } from '../../types/page-response-product-response';
+import { ProductRequest } from '../../types/product-request';
+import { ProductResponse } from '../../types/product-response';
+import { PageResponseBorrowedProductResponse } from '../../types/page-response-borrowed-product-response';
 
 export interface PaginationParams {
   page?: number;

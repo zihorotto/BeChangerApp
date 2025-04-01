@@ -5,11 +5,11 @@
   <ng-template pTemplate="title">
     <div class="flex flex-row items-center justify-between">
       <p>{{ product.name }}</p>
-      <p-tag class="z-50" [value]="tagTitle" [severity]="getSeverity()" />
+      <p-tag class="z-50" [value]="getTagTitle()" [severity]="getSeverity()" />
     </div>
   </ng-template>
   <ng-template pTemplate="subtitle">{{ product.brand }}</ng-template>
-  <p-scrollpanel [style]="{ width: '100%', height: '50px' }">
+  <p-scrollpanel [style]="{ width: '100%', height: '60px' }">
     <p>{{ product.description }}</p>
   </p-scrollpanel>
   <ng-template pTemplate="footer">
