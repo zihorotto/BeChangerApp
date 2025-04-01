@@ -8,8 +8,8 @@ import { FormsModule } from '@angular/forms';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { ReturnDialogComponent } from '../../components/return-dialog/return-dialog.component';
 import { ProductService } from '../../services/product/product.service';
-import { PageResponseBorrowedProductResponse } from '../../types/page-response-borrowed-product-response';
-import { BorrowedProductResponse } from '../../types/borrowed-product-response';
+import { PageResponseBorrowedProductResponse } from '../../services/models/page-response-borrowed-product-response';
+import { BorrowedProductResponse } from '../../services/models/borrowed-product-response';
 import { ProgressSpinner } from 'primeng/progressspinner';
 @Component({
   selector: 'app-borrowed-products',

@@ -5,7 +5,7 @@ import { RatingModule } from 'primeng/rating';
 import { FormsModule } from '@angular/forms';
 import { TagModule } from 'primeng/tag';
 import { CommonModule } from '@angular/common';
-import { ProductResponse } from '../../types/product-response';
+import { ProductResponse } from '../../services/models/product-response';
 import { ScrollPanel } from 'primeng/scrollpanel';
 @Component({
   selector: 'app-product-card',
@@ -43,6 +43,7 @@ export class ProductCardComponent implements OnInit {
   coverImage: string | undefined;
 
   ngOnInit(): void {
+    this.getTagTitle();
     this.coverImage = this.getCoverImage();
   }
 
@@ -54,7 +55,6 @@ export class ProductCardComponent implements OnInit {
     } else {
       this.tagTitle = 'Not shared';
     }
-    return this.tagTitle;
   }
 
   getSeverity() {

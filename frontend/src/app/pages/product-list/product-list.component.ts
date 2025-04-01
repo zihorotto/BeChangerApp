@@ -52,7 +52,7 @@ export class ProductListComponent implements OnInit {
       })
       .subscribe({
         next: (response: PageResponseProductResponse) => {
-          this.allProduct.set(response);
+          this.allProduct = response;
           this.numberOfProducts = response.totalElements as number;
           this.isLoaded = false;
         },
@@ -78,7 +78,6 @@ export class ProductListComponent implements OnInit {
             summary: 'Success',
             detail: `You successfully brrowed ${product.name}`,
           });
-          this.findAllProduct();
         },
         error: (err) => {
           this.messageService.add({

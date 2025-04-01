@@ -20,7 +20,15 @@
           <td>{{ product.id }}</td>
           <td><p-rating [(ngModel)]="product.rate" [readonly]="true" /></td>
           <td>
-            <p-tag [value]="getTagTitle(product)" [severity]="getSeverity()" />
+            <p-tag
+              *ngIf="product.returned"
+              [value]="
+                product.returnedApproved
+                  ? 'Return approved'
+                  : 'Not yet approved'
+              "
+              [severity]="getSeverity(product)"
+            />
           </td>
           <td>
             <div class="card flex justify-content-center">

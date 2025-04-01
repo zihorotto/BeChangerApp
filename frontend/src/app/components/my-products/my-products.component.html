@@ -1,12 +1,20 @@
 <p-toast />
 <div class="flex flex-col h-full">
+  <p-button
+    (onClick)="navigateToAddNewProduct()"
+    label="Add new product"
+    icon="pi pi-plus"
+    class="py-4 pr-12 flex justify-end"
+  />
   @if (!isLoaded) {
-  <div class="flex flex-wrap gap-3 px-[6vw] py-5 flex-row w-full justify-start">
-    @for (product of allProduct.content; track product) {
+  <div class="flex flex-wrap gap-3 px-[6vw] flex-row w-full justify-start">
+    @for (product of allProduct.content; track product.id) {
     <app-product-card
       [product]="product"
-      [manage]="false"
-      (borrow)="borrowProduct($event)"
+      [manage]="true"
+      (delete)="deleteProduct($event)"
+      (share)="shareProduct($event)"
+      (edit)="editProduct($event)"
     ></app-product-card>
     }
   </div>

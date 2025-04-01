@@ -59,7 +59,8 @@ export class ReturnDialogComponent implements OnInit {
 
   private giveFeedback() {
     this.feedbackService.saveFeedback(this.feedbackRequest).subscribe({
-      next: () => {},
+      next: () => {
+      },
     });
   }
 }

@@ -38,7 +38,6 @@ export class ReturnedProductsComponent implements OnInit {
   first = 0;
   size = 10;
   numberOfProducts = 0;
-  tagTitle = '';
 
   allProducts: BorrowedProductResponse[] = [];
   item: BorrowedProductResponse = {};
@@ -95,27 +94,14 @@ export class ReturnedProductsComponent implements OnInit {
       });
   }
 
-  getTagTitle(product: BorrowedProductResponse) {
-    if (!product.returned) {
-      this.tagTitle = 'Borrowed';
-    } else if (product.returned && !product.returnedApproved) {
-      this.tagTitle = 'Not yet approved';
-    } else {
-      this.tagTitle = 'Return approved';
-    }
-    return this.tagTitle;
-  }
-
-  getSeverity() {
-    switch (this.tagTitle) {
-      case 'Return approved':
-        return 'success';
-      case 'Not yet approved':
-        return 'danger';
-      case 'Borrowed':
+  getSeverity(product: BorrowedProductResponse) {
+    let status = product.returnedApproved ? 'RETURNEDAPPROVED' : 'RETURNED';
+    switch (status) {
+      case 'RETURNED':
         return 'warn';
-      default:
-        return 'info';
+      case 'RETURNEDAPPROVED':
+        return 'success';
     }
+    return 'success';
   }
 }

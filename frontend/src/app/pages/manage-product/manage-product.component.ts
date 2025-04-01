@@ -62,6 +62,7 @@ export class ManageProductComponent implements OnInit {
         })
         .subscribe({
           next: (product: ProductResponse) => {
+            debugger;
             this.productRequest = {
               id: product.id,
               name: product.name as string,
