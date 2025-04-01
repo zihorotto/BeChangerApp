@@ -13,7 +13,7 @@
     RUN mvn clean package -DskipTests
     
     # --- Keycloak Stage ---
-    FROM quay.io/keycloak/keycloak:latest AS keycloak
+    FROM jboss/keycloak:15.0.2 AS keycloak
     
     # Konfiguráljuk a Keycloak környezetet
     ENV KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN}
@@ -50,14 +50,14 @@
     
     WORKDIR /app
     
+    # Telepítjük az Nginx-et (most már itt telepítjük az Nginx-et, hogy a használat előtt telepítve legyen)
+    RUN apt-get update && apt-get install -y nginx
+    
     # Backend JAR fájl másolása
     COPY --from=build /build/target/be-changer-*.jar /app/
     
     # Keycloak fájl másolása (ha szükséges)
     COPY --from=keycloak /opt/keycloak /opt/keycloak
-    
-    # Telepítjük az Nginx-et
-    RUN apt-get update && apt-get install -y nginx
     
     # Exponáljuk a backend portot
     EXPOSE 8088
