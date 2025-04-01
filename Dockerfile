@@ -50,9 +50,6 @@
     
     WORKDIR /app
     
-    # Telepítjük az Nginx-et (most már itt telepítjük az Nginx-et, hogy a használat előtt telepítve legyen)
-    RUN apt-get update && apt-get install -y nginx
-    
     # Backend JAR fájl másolása
     COPY --from=build /build/target/be-changer-*.jar /app/
     
