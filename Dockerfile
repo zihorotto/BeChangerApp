@@ -3,11 +3,11 @@
     WORKDIR /build
     
     # Másoljuk a pom.xml-t, és letöltjük a függőségeket
-    COPY pom.xml .
+    COPY backend/pom.xml .
     RUN mvn dependency:go-offline
     
     # Másoljuk a forráskódot
-    COPY src ./src
+    COPY backend/src ./src
     
     # Maven build
     RUN mvn clean package -DskipTests
