@@ -1,14 +1,25 @@
-app = "bechangerapp"
+# fly.toml app configuration file generated for bechangerapp-ancient-frost-9304 on 2025-04-01T21:19:45+02:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'bechangerapp-ancient-frost-9304'
+primary_region = 'otp'
 
 [build]
-  dockerfile = "Dockerfile"  # Dockerfile path
+  dockerfile = 'Dockerfile'
 
 [[services]]
-  internal_port = 8088  # Backend port
-  public_port = 80      # Frontend port
-  allow_tls = true
+  protocol = ''
+  internal_port = 8088
+  ports = []
 
 [[services]]
-  internal_port = 8082  # Keycloak internal port
-  public_port = 9090    # Expose keycloak on a different public port
-  allow_tls = true
+  protocol = ''
+  internal_port = 8082
+  ports = []
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1

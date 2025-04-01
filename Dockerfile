@@ -25,27 +25,19 @@
     # --- Frontend Build Stage ---
     FROM node:22.8.0 AS frontend-build
     
-    WORKDIR /beChangerApp/frontend
+    WORKDIR /frontend
     
     # Másoljuk a package.json-t, majd telepítjük a függőségeket
-    COPY package*.json ./
+    COPY /frontend/package*.json /frontend/
     RUN npm install
     
     # Másoljuk a frontend forráskódot
     COPY . .
     
-    # --- Frontend NGINX Stage ---
-    FROM nginx:alpine AS frontend
+    # Az Nginx telepítése
+    RUN apt-get update && apt-get install -y nginx
     
-    # Nginx konfiguráció másolása
-    COPY nginx.conf /etc/nginx/nginx.conf
-    
-    # Kiszolgáljuk a frontend statikus fájljait
-    COPY --from=frontend-build /beChangerApp/frontend/dist /usr/share/nginx/html
-    
-    EXPOSE 80
-    
-    # --- Runtime Stage: Backend + Frontend + Keycloak ---
+    # --- Runtime Stage: Backend + Frontend + Keycloak + Nginx ---
     FROM amazoncorretto:21 AS runtime
     
     WORKDIR /app
@@ -53,22 +45,21 @@
     # Backend JAR fájl másolása
     COPY --from=build /build/target/be-changer-*.jar /app/
     
-    # Keycloak fájl másolása (ha szükséges)
+    # Másoljuk a Keycloak fájlokat
     COPY --from=keycloak /opt/keycloak /opt/keycloak
     
-    # Exponáljuk a backend portot
+    # Másoljuk a frontend statikus fájlokat a megfelelő Nginx könyvtárba
+    COPY --from=frontend-build /frontend/dist/game-network-ui/browser /usr/share/nginx/html
+
+    # Másoljuk az Nginx konfigurációs fájlt
+    COPY /frontend/nginx.conf /etc/nginx/nginx.conf
+
+    # Exponáljuk a backend és Nginx portokat
     EXPOSE 8088
     EXPOSE 80
     
-    # Keycloak, Frontend és Backend környezeti változók
-    ENV ACTIVE_PROFILE=dev
-    ENV JAR_VERSION=1.1.0
-    ENV SPRING_MAIL_HOST=${SPRING_MAIL_HOST}
-    ENV SPRING_MAIL_USERNAME=missing_user_name
-    ENV SPRING_MAIL_PASSWORD=missing_password
-    
-    # Backend indítása
+    # Backend, Keycloak és Nginx indítása
     CMD java -jar -Dspring.profiles.active=${ACTIVE_PROFILE} be-changer-${JAR_VERSION}.jar & \
         /opt/keycloak/bin/kc.sh start-dev & \
-        nginx -g 'daemon off;'  # Nginx futtatása a frontend számára
+        nginx -g 'daemon off;'
     
