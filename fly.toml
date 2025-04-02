@@ -1,14 +1,14 @@
-app = "your-app-name"
+app = "bechangerapp"
 
 [build]
-  dockerfile = "Dockerfile"  # Az egyetlen Dockerfile
+  dockerfile = "Dockerfile"  # Dockerfile path
 
 [[services]]
-  internal_port = 8088  # Backend portja
-  public_port = 80      # Frontend portja
+  internal_port = 8088  # Backend port
+  public_port = 80      # Frontend port
   allow_tls = true
 
 [[services]]
-  internal_port = 8082  # Keycloak portja
-  public_port = 8082    # Keycloak nyilvános portja
+  internal_port = 8082  # Keycloak internal port
+  public_port = 9090    # Expose keycloak on a different public port
   allow_tls = true

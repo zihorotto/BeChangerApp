@@ -3,21 +3,17 @@
     WORKDIR /build
     
     # Másoljuk a pom.xml-t, és letöltjük a függőségeket
-    COPY pom.xml .
+    COPY backend/pom.xml . 
     RUN mvn dependency:go-offline
     
     # Másoljuk a forráskódot
-    COPY src ./src
+    COPY backend/src ./src
     
     # Maven build
     RUN mvn clean package -DskipTests
     
     # --- Keycloak Stage ---
     FROM quay.io/keycloak/keycloak:latest AS keycloak
-    
-    # Konfiguráljuk a Keycloak környezetet
-    ENV KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN}
-    ENV KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}
     
     # Indítjuk a Keycloak-ot a fejlesztői módban
     ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start-dev"]
@@ -45,10 +41,14 @@
     
     EXPOSE 80
     
-    # --- Runtime Stage: Backend + Frontend + Keycloak ---
+    # --- Runtime Stage: Backend + Keycloak ---
     FROM amazoncorretto:21 AS runtime
     
     WORKDIR /app
+    
+    # Telepítjük a szükséges eszközöket (ha szükséges)
+    # RUN yum update -y && \
+    #     yum install -y gcc pcre-devel zlib-devel make tar gzip
     
     # Backend JAR fájl másolása
     COPY --from=build /build/target/be-changer-*.jar /app/
@@ -59,15 +59,7 @@
     # Exponáljuk a backend portot
     EXPOSE 8088
     
-    # Keycloak, Frontend és Backend környezeti változók
-    ENV ACTIVE_PROFILE=dev
-    ENV JAR_VERSION=1.1.0
-    ENV SPRING_MAIL_HOST=${SPRING_MAIL_HOST}
-    ENV SPRING_MAIL_USERNAME=missing_user_name
-    ENV SPRING_MAIL_PASSWORD=missing_password
-    
-    # Backend indítása
+    # Backend és Keycloak indítása
     CMD java -jar -Dspring.profiles.active=${ACTIVE_PROFILE} be-changer-${JAR_VERSION}.jar & \
-        /opt/keycloak/bin/kc.sh start-dev & \
-        nginx -g 'daemon off;'  # Nginx futtatása a frontend számára
+        /opt/keycloak/bin/kc.sh start-dev
     
