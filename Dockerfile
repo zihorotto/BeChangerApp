@@ -23,19 +23,30 @@
     ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start-dev"]
     
     # --- Frontend Build Stage ---
-    FROM node:22.8.0 AS frontend-build
-    
-    WORKDIR /frontend
-    
-    # Másoljuk a package.json-t, majd telepítjük a függőségeket
-    COPY /frontend/package*.json /frontend/
-    RUN npm install
-    
-    # Másoljuk a frontend forráskódot
-    COPY . .
-    
-    # Az Nginx telepítése
-    RUN apt-get update && apt-get install -y nginx
+FROM node:22.8.0 AS frontend-build
+
+WORKDIR /frontend
+
+# Másoljuk a package.json fájlokat
+COPY frontend/package*.json ./
+
+# Telepítjük a függőségeket
+RUN npm install
+
+# Másoljuk a frontend forráskódot
+COPY frontend/ ./
+
+# Az Angular alkalmazás buildelése
+RUN npm run build --prod
+
+# --- Runtime Stage ---
+FROM nginx:latest AS runtime
+
+# Az Nginx telepítése
+RUN apt-get update && apt-get install -y nginx
+
+# Másoljuk a frontend buildet az Nginx-be
+COPY --from=frontend-build /frontend/dist/game-network-ui/browser /usr/share/nginx/html
     
     # --- Runtime Stage: Backend + Frontend + Keycloak + Nginx ---
     FROM amazoncorretto:21 AS runtime
@@ -50,7 +61,6 @@
     
     # Másoljuk a frontend statikus fájlokat a megfelelő Nginx könyvtárba
     COPY --from=frontend-build /frontend/dist/game-network-ui/browser /usr/share/nginx/html
-
     # Másoljuk az Nginx konfigurációs fájlt
     COPY /frontend/nginx.conf /etc/nginx/nginx.conf
 
