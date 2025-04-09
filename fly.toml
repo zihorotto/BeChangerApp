@@ -9,6 +9,6 @@
   ports = []
 
 [[vm]]
-  memory = "4gb"
+  memory = "2gb"
   cpu_kind = "shared"
   cpus = 1
