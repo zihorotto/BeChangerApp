@@ -20,6 +20,6 @@ primary_region = 'otp'
   ports = []
 
 [[vm]]
-  memory = '1gb'
+  memory = '4gb'
   cpu_kind = 'shared'
   cpus = 1
