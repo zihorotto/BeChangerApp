@@ -1,25 +1,14 @@
-# fly.toml app configuration file generated for bechangerapp-ancient-frost-9304 on 2025-04-01T21:19:45+02:00
-#
-# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
-#
-
-app = 'bechangerapp-ancient-frost-9304'
-primary_region = 'otp'
-
-[build]
-  dockerfile = 'Dockerfile'
-
 [[services]]
-  protocol = ''
+  protocol = "tcp"
   internal_port = 8088
-  ports = []
-
+  ports = [{ port = 80 }]
+  
 [[services]]
-  protocol = ''
+  protocol = "tcp"
   internal_port = 8082
   ports = []
 
 [[vm]]
-  memory = '4gb'
-  cpu_kind = 'shared'
+  memory = "4gb"
+  cpu_kind = "shared"
   cpus = 1
