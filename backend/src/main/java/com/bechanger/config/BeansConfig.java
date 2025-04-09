@@ -33,7 +33,13 @@ public class BeansConfig {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         final CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOriginPatterns(List.of("http://localhost:4200", "http://localhost:8080", "http://localhost:8088"));
+        config.setAllowedOriginPatterns(List.of("https://bechangerapp-ancient-frost-9304.fly.dev",           // éles frontend alkalmazás URL-je
+        "https://bechangerapp-ancient-frost-9304.fly.dev:4200",       // éles frontend Angular port
+        "https://localhost:4200",                                      // fejlesztési frontend URL (ha szükséges, az éles helyett)
+        "http://localhost:8080",                                       // fejlesztési backend API
+        "http://localhost:8088",                                       // másik fejlesztési backend API
+        "https://bechangerapp-ancient-frost-9304.fly.dev:8080",        // éles backend API port 8080
+        "https://bechangerapp-ancient-frost-9304.fly.dev:8088" ));        // éles backend API port 8088);
         config.setAllowedHeaders(Arrays.asList(
                 HttpHeaders.ORIGIN,
                 CONTENT_TYPE,

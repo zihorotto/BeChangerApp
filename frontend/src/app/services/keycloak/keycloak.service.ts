@@ -13,7 +13,7 @@ export class KeycloakService {
   get keycloak() {
     if (!this._keycloak) {
       this._keycloak = new KeyCloak({
-        url: 'http://localhost:9090',
+        url: 'http://bechangerapp-ancient-frost-9304.fly.dev:9090',
         realm: 'be-changer-app',
         clientId: 'bc'
       });
@@ -42,7 +42,7 @@ export class KeycloakService {
 
 
   logout(){
-    return this.keycloak?.logout({redirectUri: 'http://localhost:4200'})
+    return this.keycloak?.logout({redirectUri: 'http://bechangerapp-ancient-frost-9304.fly.dev:4200'})
     // return this.keycloak?.accountManagement();
   }
 }

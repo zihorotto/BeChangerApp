@@ -11,7 +11,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class ApiConfiguration {
-  rootUrl: string = 'http://localhost:8088/api/v1';
+  rootUrl: string = 'http://bechangerapp-ancient-frost-9304.fly.dev:8088/api/v1';
 }
 
 /**
