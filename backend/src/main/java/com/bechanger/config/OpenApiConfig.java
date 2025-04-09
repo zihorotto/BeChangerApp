@@ -29,7 +29,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
         servers = {
                 @Server(
                         description = "Local ENV",
-                        url = "http://bechangerapp-ancient-frost-9304.fly.dev:8088/api/v1"
+                        url = "https://bechangerapp-ancient-frost-9304.fly.dev:8088/api/v1"
                 ),
                 @Server(
                         description = "Prod Env",

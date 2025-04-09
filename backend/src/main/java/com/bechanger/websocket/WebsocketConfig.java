@@ -40,7 +40,7 @@ public class WebsocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws")
-                .setAllowedOrigins("http://bechangerapp-ancient-frost-9304.fly.dev:4200")
+                .setAllowedOrigins("https://bechangerapp-ancient-frost-9304.fly.dev:4200")
                 .withSockJS();
     }
 

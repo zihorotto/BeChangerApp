@@ -36,7 +36,7 @@ export class MenuComponent {
 
   notificationHandler() {
     if (this.keycloakService.keycloak.tokenParsed?.sub) {
-      let ws = new SockJS('http://bechangerapp-ancient-frost-9304.fly.dev:8088/api/v1/ws');
+      let ws = new SockJS('https://bechangerapp-ancient-frost-9304.fly.dev:8088/api/v1/ws');
       this.socketClient = Stomp.over(ws);
       this.socketClient.connect(
         { Authorization: 'Bearer ' + this.keycloakService.keycloak.token },
