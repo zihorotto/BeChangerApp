@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # BeChangerApp
 
 ## English
